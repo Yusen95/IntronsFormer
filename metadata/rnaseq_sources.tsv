@@ -1,0 +1,2 @@
+cell_line	encode_experiment_accession	genome_build	annotation	used_for	notes
+K562	ENCSR000CPH	hg38	Ensembl_release_111	IRFinder;Cufflinks	RNA-seq source for K562
