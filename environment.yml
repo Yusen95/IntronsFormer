@@ -1,0 +1,24 @@
+name: intronsformer
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.8
+  - numpy
+  - pandas
+  - scipy
+  - scikit-learn
+  - matplotlib
+  - pillow
+  - biopython
+  - pytorch=1.12.0
+  - cudatoolkit=11.3
+  - pip
+  - pip:
+      - captum
+      - performer-pytorch
+      - pyBigWig
+      - transformers

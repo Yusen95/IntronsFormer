@@ -1,0 +1,3 @@
+487cf844063dcfa05909519476668792e3eac2b31a2c398723d516e3fa57a06f  example/irfinder/K562_IRFinder-IR-dir.txt
+77a927c832043b2d915208c554dcd99b473413210046bc5ea5bd943e03f96588  example/cufflinks/K562_genes.fpkm_tracking
+87262fadd1f4f9f4fd3b8f51e63904b68cc757a16061ab26d0e1bfe1e9cf9748  models/best_2conv_auc.pt

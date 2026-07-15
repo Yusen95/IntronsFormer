@@ -1,2 +1,9 @@
 cell_line	encode_experiment_accession	genome_build	annotation	used_for	notes
 K562	ENCSR000CPH	hg38	Ensembl_release_111	IRFinder;Cufflinks	RNA-seq source for K562
+GM12878	ENCSR000AED	hg38	Ensembl_release_111	IRFinder;Cufflinks	RNA-seq source for GM12878
+H1	ENCSR670WQY	hg38	Ensembl_release_111	IRFinder;Cufflinks	RNA-seq source for H1
+IMR-90	ENCSR000CTQ	hg38	Ensembl_release_111	IRFinder;Cufflinks	RNA-seq source for IMR-90
+HepG2	ENCSR561FEE	hg38	Ensembl_release_111	IRFinder;Cufflinks	RNA-seq source for HepG2
+HeLa-S3	ENCSR000CPP	hg38	Ensembl_release_111	IRFinder;Cufflinks	RNA-seq source for HeLa-S3
+GM23248	ENCSR510QZW	hg38	Ensembl_release_111	IRFinder;Cufflinks	RNA-seq source for GM23248
+SK-N-SH	ENCSR000CTR	hg38	Ensembl_release_111	IRFinder;Cufflinks	RNA-seq source for SK-N-SH

@@ -1,0 +1,12 @@
+biopython
+captum
+matplotlib
+numpy
+pandas
+pillow
+performer-pytorch
+pyBigWig
+scikit-learn
+scipy
+torch
+transformers

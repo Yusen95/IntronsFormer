@@ -27,6 +27,7 @@ env/
 *.sam
 *.cram
 *.cram.crai
+models/*.pt
 
 # OS/editor files
 .DS_Store

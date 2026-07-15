@@ -1,0 +1,72 @@
+type	group	class	target	cell_line	run_id	result_dir	all_events	up_events	down_events	status	note	plot_group	encode_cell_lines	encode_assays	encode_accessions
+RBP	control	random_rbp_control	ACO1	HepG2	ACO1_HepG2	ACO1_HepG2_result	250	129	121	ok		control			
+TF	control	random_tf_control	BACH1	K562	BACH1_K562	BACH1_K562_result	171	97	74	ok		control			
+RBP	prediction	positive_and_negative	CPEB4		CPEB4	CPEB4_result	412	168	244	ok	rbp_in_both_pos_neg	prediction	K562	shRNA RNA-seq:K562	ENCSR795VAK:shRNA RNA-seq:K562
+RBP	prediction	positive	DAZAP1		DAZAP1	DAZAP1_result	458	182	276	ok		prediction	HepG2;K562	shRNA RNA-seq:HepG2;shRNA RNA-seq:K562	ENCSR220TBR:shRNA RNA-seq:HepG2;ENCSR907UTB:shRNA RNA-seq:K562
+RBP	prediction	positive	DAZAP1	HepG2	DAZAP1_HepG2	DAZAP1_result_HepG2	148	92	56	ok		prediction	HepG2;K562	shRNA RNA-seq:HepG2;shRNA RNA-seq:K562	ENCSR220TBR:shRNA RNA-seq:HepG2;ENCSR907UTB:shRNA RNA-seq:K562
+RBP	prediction	negative	EIF2S1		EIF2S1	EIF2S1_result	407	146	261	ok		prediction	HepG2;K562	shRNA RNA-seq:HepG2;shRNA RNA-seq:K562	ENCSR861ENA:shRNA RNA-seq:HepG2;ENCSR546MBH:shRNA RNA-seq:K562
+RBP	prediction	negative	EIF2S1	HepG2	EIF2S1_HepG2	EIF2S1_result_HepG2	150	76	74	ok		prediction	HepG2;K562	shRNA RNA-seq:HepG2;shRNA RNA-seq:K562	ENCSR861ENA:shRNA RNA-seq:HepG2;ENCSR546MBH:shRNA RNA-seq:K562
+RBP	control	random_rbp_control	EIF4B	K562	EIF4B_K562	EIF4B_K562_result	217	69	148	ok		control			
+RBP	prediction	positive_and_negative	FMR1	K562	FMR1_K562	FMR1_K562_result	174	76	98	ok	rbp_in_both_pos_neg	prediction	HepG2;K562	shRNA RNA-seq:HepG2;shRNA RNA-seq:K562	ENCSR905HID:shRNA RNA-seq:HepG2;ENCSR555LCE:shRNA RNA-seq:K562
+TF	control	random_tf_control	FOXM1	K562	FOXM1_K562	FOXM1_K562_result	252	101	151	ok		control			
+RBP	control	random_rbp_control	FUS	HepG2	FUS_HepG2	FUS_HepG2_result	224	93	131	ok		control			
+RBP	control	random_rbp_control	FXR1	K562	FXR1_K562	FXR1_K562_result	309	73	236	ok		control			
+RBP	prediction	positive_and_negative	FXR2	K562	FXR2_K562	FXR2_K562_result	157	35	122	ok	rbp_in_both_pos_neg	prediction	HepG2;K562	CRISPR RNA-seq:HepG2;CRISPR RNA-seq:K562;shRNA RNA-seq:K562	ENCSR147RTA:CRISPR RNA-seq:HepG2;ENCSR376GHG:CRISPR RNA-seq:K562;ENCSR139BIJ:shRNA RNA-seq:K562
+RBP	control	random_rbp_control	G3BP2	HepG2	G3BP2_HepG2	G3BP2_HepG2_result	198	158	40	ok		control			
+TF	control	random_tf_control	GATA2	K562	GATA2_K562	GATA2_K562_result	235	95	140	ok		control			
+RBP	prediction	positive_and_negative	HNRNPC		HNRNPC	HNRNPC_result	179	74	105	ok	rbp_in_both_pos_neg	prediction	HepG2;K562	shRNA RNA-seq:HepG2;shRNA RNA-seq:K562	ENCSR052IYH:shRNA RNA-seq:HepG2;ENCSR470PRV:shRNA RNA-seq:K562;ENCSR634KBO:shRNA RNA-seq:K562
+RBP	prediction	positive_and_negative	HNRNPC	HepG2	HNRNPC_HepG2	HNRNPC_result_HepG2	118	81	37	ok	rbp_in_both_pos_neg	prediction	HepG2;K562	shRNA RNA-seq:HepG2;shRNA RNA-seq:K562	ENCSR052IYH:shRNA RNA-seq:HepG2;ENCSR470PRV:shRNA RNA-seq:K562;ENCSR634KBO:shRNA RNA-seq:K562
+RBP	control	random_rbp_control	HNRNPK	HepG2	HNRNPK_HepG2	HNRNPK_HepG2_result	249	215	34	ok		control			
+RBP	prediction	positive_and_negative	HNRNPLL	HepG2	HNRNPLL_HepG2	HNRNPLL_HepG2_result	172	100	72	ok	rbp_in_both_pos_neg	prediction	HepG2	shRNA RNA-seq:HepG2	ENCSR490DYI:shRNA RNA-seq:HepG2
+RBP	prediction	positive_and_negative	HNRNPL	K562	HNRNPL_K562	HNRNPL_K562_result	272	98	174	ok	rbp_in_both_pos_neg	prediction	HepG2;K562	shRNA RNA-seq:HepG2;shRNA RNA-seq:K562	ENCSR155BMF:shRNA RNA-seq:HepG2;ENCSR563YIS:shRNA RNA-seq:K562
+TF	control	random_tf_control	HSF1	K562	HSF1_K562	HSF1_K562_result	200	104	96	ok		control			
+RBP	prediction	positive_and_negative	KHDRBS1	HepG2	KHDRBS1_HepG2	KHDRBS1_HepG2_result	287	49	238	ok	rbp_in_both_pos_neg	prediction	HepG2;K562	shRNA RNA-seq:HepG2;shRNA RNA-seq:K562	ENCSR784FTX:shRNA RNA-seq:HepG2;ENCSR023HWI:shRNA RNA-seq:K562
+TF	control	random_tf_control	LIN28B	K562	LIN28B_K562	LIN28B_K562_result	198	110	88	ok		control			
+RBP	prediction	negative	MATR3		MATR3	MATR3_result	464	163	301	ok		prediction	HepG2;K562	shRNA RNA-seq:HepG2;shRNA RNA-seq:K562	ENCSR492UFS:shRNA RNA-seq:HepG2;ENCSR792XFP:shRNA RNA-seq:K562
+RBP	prediction	negative	MATR3	HepG2	MATR3_HepG2	MATR3_result_HepG2	110	41	69	ok		prediction	HepG2;K562	shRNA RNA-seq:HepG2;shRNA RNA-seq:K562	ENCSR492UFS:shRNA RNA-seq:HepG2;ENCSR792XFP:shRNA RNA-seq:K562
+TF	prediction	negative	MAZ		MAZ	MAZ_result	109	27	82	ok		prediction	K562	siRNA RNA-seq:K562	ENCSR129WCZ:siRNA RNA-seq:K562
+RBP	prediction	positive	MBNL1		MBNL1	MBNL1_result	393	221	172	ok		prediction	K562	shRNA RNA-seq:K562	ENCSR222COT:shRNA RNA-seq:K562
+TF	control	random_tf_control	MITF	K562	MITF_K562	MITF_K562_result	183	104	79	ok		control			
+TF	control	random_tf_control	NFATC1	K562	NFATC1_K562	NFATC1_K562_result	132	63	69	ok		control			
+TF	control	random_tf_control	NFE2L1	K562	NFE2L1_K562	NFE2L1_K562_result	254	119	135	ok		control			
+TF	control	random_tf_control	NFYB	K562	NFYB_K562	NFYB_K562_result	276	144	132	ok		control			
+RBP	prediction	positive	NONO		NONO	NONO_result	452	89	363	ok		prediction	HepG2;K562	CRISPRi RNA-seq:K562;shRNA RNA-seq:HepG2;shRNA RNA-seq:K562	ENCSR647NYX:shRNA RNA-seq:HepG2;ENCSR039VEQ:CRISPRi RNA-seq:K562;ENCSR398HXV:shRNA RNA-seq:K562
+RBP	prediction	positive	NONO	HepG2	NONO_HepG2	NONO_result_HepG2	110	45	65	ok		prediction	HepG2;K562	CRISPRi RNA-seq:K562;shRNA RNA-seq:HepG2;shRNA RNA-seq:K562	ENCSR647NYX:shRNA RNA-seq:HepG2;ENCSR039VEQ:CRISPRi RNA-seq:K562;ENCSR398HXV:shRNA RNA-seq:K562
+TF	prediction	positive_and_negative	NR4A1		NR4A1	NR4A1_result	341	145	196	ok	tf_in_both_pos_neg	prediction	K562	CRISPRi RNA-seq:K562	ENCSR357LVC:CRISPRi RNA-seq:K562
+RBP	prediction	positive_and_negative	PABPC1	K562	PABPC1_K562	PABPC1_K562_result	221	139	82	ok	rbp_in_both_pos_neg	prediction	HepG2;K562	shRNA RNA-seq:HepG2;shRNA RNA-seq:K562	ENCSR910YNJ:shRNA RNA-seq:HepG2;ENCSR192GBD:shRNA RNA-seq:K562
+RBP	prediction	positive_and_negative	PABPC4		PABPC4	PABPC4_result	349	245	104	ok	rbp_in_both_pos_neg	prediction	HepG2;K562	shRNA RNA-seq:HepG2;shRNA RNA-seq:K562	ENCSR455VZH:shRNA RNA-seq:HepG2;ENCSR047EEG:shRNA RNA-seq:K562
+RBP	prediction	positive_and_negative	PABPC4	HepG2	PABPC4_HepG2	PABPC4_result_HepG2	183	99	84	ok	rbp_in_both_pos_neg	prediction	HepG2;K562	shRNA RNA-seq:HepG2;shRNA RNA-seq:K562	ENCSR455VZH:shRNA RNA-seq:HepG2;ENCSR047EEG:shRNA RNA-seq:K562
+RBP	prediction	positive	PCBP1		PCBP1	PCBP1_result	383	193	190	ok		prediction	HepG2;K562	shRNA RNA-seq:HepG2;shRNA RNA-seq:K562	ENCSR635FRH:shRNA RNA-seq:HepG2;ENCSR545AIK:shRNA RNA-seq:K562
+RBP	prediction	positive	PCBP1	HepG2	PCBP1_HepG2	PCBP1_result_HepG2	133	58	75	ok		prediction	HepG2;K562	shRNA RNA-seq:HepG2;shRNA RNA-seq:K562	ENCSR635FRH:shRNA RNA-seq:HepG2;ENCSR545AIK:shRNA RNA-seq:K562
+RBP	prediction	positive	PCBP2		PCBP2	PCBP2_result	393	238	155	ok		prediction	HepG2;K562	shRNA RNA-seq:HepG2;shRNA RNA-seq:K562	ENCSR028ITN:shRNA RNA-seq:HepG2;ENCSR648QFY:shRNA RNA-seq:K562
+RBP	prediction	positive	PCBP2	HepG2	PCBP2_HepG2	PCBP2_result_HepG2	154	126	28	ok		prediction	HepG2;K562	shRNA RNA-seq:HepG2;shRNA RNA-seq:K562	ENCSR028ITN:shRNA RNA-seq:HepG2;ENCSR648QFY:shRNA RNA-seq:K562
+RBP	prediction	positive	PCBP3		PCBP3	PCBP3_result	406	182	224	ok		prediction	K562	CRISPR RNA-seq:K562	ENCSR105LOV:CRISPR RNA-seq:K562
+RBP	prediction	positive_and_negative	PTBP1	K562	PTBP1_K562	PTBP1_K562_result	314	64	250	ok	rbp_in_both_pos_neg	prediction	HepG2;K562	shRNA RNA-seq:HepG2;shRNA RNA-seq:K562	ENCSR064DXG:shRNA RNA-seq:HepG2;ENCSR527IVX:shRNA RNA-seq:K562
+RBP	control	random_rbp_control	RBM3	K562	RBM3_K562	RBM3_K562_result	318	266	52	ok		control			
+RBP	prediction	positive	RBM8A		RBM8A	RBM8A_result	356	184	172	ok		prediction	K562	CRISPR RNA-seq:K562	ENCSR163RXI:CRISPR RNA-seq:K562
+TF	control	random_tf_control	RELA	K562	RELA_K562	RELA_K562_result	176	134	42	ok		control			
+RBP	prediction	positive	SF3B4		SF3B4	SF3B4_result	321	230	91	ok		prediction	HepG2;K562	shRNA RNA-seq:HepG2;shRNA RNA-seq:K562	ENCSR148MQK:shRNA RNA-seq:HepG2;ENCSR081XRA:shRNA RNA-seq:K562
+RBP	prediction	positive	SF3B4	HepG2	SF3B4_HepG2	SF3B4_result_HepG2	145	82	63	ok		prediction	HepG2;K562	shRNA RNA-seq:HepG2;shRNA RNA-seq:K562	ENCSR148MQK:shRNA RNA-seq:HepG2;ENCSR081XRA:shRNA RNA-seq:K562
+RBP	prediction	negative	SNRNP70	HepG2	SNRNP70_HepG2	SNRNP70_result_HepG2	119	92	27	ok		prediction	HepG2	shRNA RNA-seq:HepG2	ENCSR635BOO:shRNA RNA-seq:HepG2
+TF	prediction	positive	SP1		SP1	SP1_result	409	160	249	ok		prediction	K562	CRISPRi RNA-seq:K562	ENCSR650QAK:CRISPRi RNA-seq:K562
+TF	control	random_tf_control	SRF	K562	SRF_K562	SRF_K562_result	184	88	96	ok		control			
+RBP	prediction	positive	SRSF4		SRSF4	SRSF4_result	318	168	150	ok		prediction	HepG2;K562	CRISPR RNA-seq:HepG2;CRISPR RNA-seq:K562	ENCSR471INA:CRISPR RNA-seq:HepG2;ENCSR929JKA:CRISPR RNA-seq:HepG2;ENCSR939BTN:CRISPR RNA-seq:K562
+RBP	prediction	positive	SRSF4	HepG2	SRSF4_HepG2	SRSF4_result_HepG2	186	121	65	ok		prediction	HepG2;K562	CRISPR RNA-seq:HepG2;CRISPR RNA-seq:K562	ENCSR471INA:CRISPR RNA-seq:HepG2;ENCSR929JKA:CRISPR RNA-seq:HepG2;ENCSR939BTN:CRISPR RNA-seq:K562
+RBP	prediction	negative	SRSF7		SRSF7	SRSF7_result	377	162	215	ok		prediction	HepG2;K562	CRISPR RNA-seq:HepG2;CRISPR RNA-seq:K562	ENCSR845MNM:CRISPR RNA-seq:HepG2;ENCSR139LOF:CRISPR RNA-seq:K562
+RBP	prediction	negative	SRSF7	HepG2	SRSF7_HepG2	SRSF7_result_HepG2	83	60	23	ok		prediction	HepG2;K562	CRISPR RNA-seq:HepG2;CRISPR RNA-seq:K562	ENCSR845MNM:CRISPR RNA-seq:HepG2;ENCSR139LOF:CRISPR RNA-seq:K562
+RBP	prediction	positive	SRSF9		SRSF9	SRSF9_result	413	159	254	ok		prediction	HepG2;K562	CRISPR RNA-seq:HepG2;CRISPR RNA-seq:K562;shRNA RNA-seq:HepG2	ENCSR814JQP:CRISPR RNA-seq:HepG2;ENCSR597XHH:shRNA RNA-seq:HepG2;ENCSR972AZD:CRISPR RNA-seq:K562
+RBP	prediction	positive	SRSF9	HepG2	SRSF9_HepG2	SRSF9_result_HepG2	148	52	96	ok		prediction	HepG2;K562	CRISPR RNA-seq:HepG2;CRISPR RNA-seq:K562;shRNA RNA-seq:HepG2	ENCSR814JQP:CRISPR RNA-seq:HepG2;ENCSR597XHH:shRNA RNA-seq:HepG2;ENCSR972AZD:CRISPR RNA-seq:K562
+TF	control	random_tf_control	STAT1	K562	STAT1_K562	STAT1_K562_result	185	83	102	ok		control			
+TF	control	random_tf_control	STAT6	K562	STAT6_K562	STAT6_K562_result	203	62	141	ok		control			
+RBP	control	random_rbp_control	TARDBP	HepG2	TARDBP_HepG2	TARDBP_HepG2_result	202	113	89	ok		control			
+RBP	prediction	positive_and_negative	TIA1		TIA1	TIA1_result	402	124	278	ok	rbp_in_both_pos_neg	prediction	HepG2;K562	shRNA RNA-seq:HepG2;shRNA RNA-seq:K562	ENCSR057GCF:shRNA RNA-seq:HepG2;ENCSR694LKY:shRNA RNA-seq:K562
+RBP	prediction	positive_and_negative	TIA1	HepG2	TIA1_HepG2	TIA1_result_HepG2	184	94	90	ok	rbp_in_both_pos_neg	prediction	HepG2;K562	shRNA RNA-seq:HepG2;shRNA RNA-seq:K562	ENCSR057GCF:shRNA RNA-seq:HepG2;ENCSR694LKY:shRNA RNA-seq:K562
+RBP	prediction	positive_and_negative	U2AF2		U2AF2	U2AF2_result	191	159	32	ok	rbp_in_both_pos_neg	prediction	HepG2;K562	shRNA RNA-seq:HepG2;shRNA RNA-seq:K562	ENCSR426UUG:shRNA RNA-seq:HepG2;ENCSR904CJQ:shRNA RNA-seq:K562
+RBP	prediction	positive_and_negative	U2AF2	HepG2	U2AF2_HepG2	U2AF2_result_HepG2	173	150	23	ok	rbp_in_both_pos_neg	prediction	HepG2;K562	shRNA RNA-seq:HepG2;shRNA RNA-seq:K562	ENCSR426UUG:shRNA RNA-seq:HepG2;ENCSR904CJQ:shRNA RNA-seq:K562
+TF	control	random_tf_control	USF1	K562	USF1_K562	USF1_K562_result	180	52	128	ok		control			
+TF	control	random_tf_control	USF2	K562	USF2_K562	USF2_K562_result	372	248	124	ok		control			
+RBP	prediction	negative	YBX1		YBX1	YBX1_result	412	214	198	ok		prediction	HepG2;K562	CRISPR RNA-seq:HepG2;CRISPR RNA-seq:K562	ENCSR548OTL:CRISPR RNA-seq:HepG2;ENCSR659UXO:CRISPR RNA-seq:K562
+RBP	prediction	negative	YBX1	HepG2	YBX1_HepG2	YBX1_result_HepG2	178	53	125	ok		prediction	HepG2;K562	CRISPR RNA-seq:HepG2;CRISPR RNA-seq:K562	ENCSR548OTL:CRISPR RNA-seq:HepG2;ENCSR659UXO:CRISPR RNA-seq:K562
+RBP	prediction	negative	YBX3	HepG2	YBX3_HepG2	YBX3_HepG2_result	176	65	111	ok		prediction	HepG2;K562	shRNA RNA-seq:HepG2;shRNA RNA-seq:K562	ENCSR494VSD:shRNA RNA-seq:HepG2;ENCSR306EIU:shRNA RNA-seq:K562
+TF	prediction	positive	ZNF180		ZNF180	ZNF180_result	427	93	334	ok		prediction	K562	siRNA RNA-seq:K562	ENCSR555CYH:siRNA RNA-seq:K562
+TF	prediction	positive_and_negative	ZNF384		ZNF384	ZNF384_result	435	89	346	ok	tf_in_both_pos_neg	prediction	K562	CRISPRi RNA-seq:K562;siRNA RNA-seq:K562	ENCSR103URL:CRISPRi RNA-seq:K562;ENCSR965CCM:siRNA RNA-seq:K562
