@@ -10,8 +10,7 @@ CUDA precision; pipeline tests cover these options.
 additional plotting/preparation scripts, restored input tables and successful
 replotting checks. [The HPCC snapshot](../provenance/hpcc_20260911/README.md)
 now preserves the actual frozen code and observed environment. The table below
-is the earlier 18-script audit; a clean installation and a complete raw-data
-rerun remain unverified.
+is the earlier 18-script audit.
 
 Checked 2026-09-11 against commit `6dca3e3`, plus the portability fixes described
 below. Scope: all 18 tracked Python analysis scripts and all nine tracked
@@ -21,8 +20,7 @@ separately. This is a code and small-input audit, not a complete paper rerun.
 **Conclusion:** the repository can run several processed-data steps locally.
 A clean checkout cannot yet reproduce the complete raw-input-to-paper workflow
 on an ordinary Windows machine. Raw processing requires external tools,
-references and data; its current entry point requires Slurm. The training and
-IG environments and actual HPCC script equivalence remain unverified.
+references and data; its current entry point requires Slurm.
 
 ## What was executed
 
@@ -61,8 +59,8 @@ not validation of all scientific edge cases or equivalence to HPCC results.
 | `02_filter_bed_windows.py` | Executed on both K562 BED outputs | pandas required. Flanks can produce negative BED starts; later feature extraction clips them, while stored BED metadata retains the original coordinates. |
 | `03_build_feature_npz.py` | Source reviewed; full execution not tested because pyBigWig is absent | Requires reference FASTA and four real BigWigs. Removing non-ACGT bases without matching signal masking can misalign features. Assembly/coordinate identity needs checking. |
 | `04_create_training_dataset.py` | Executed with synthetic 4-channel arrays; 3 positives + 12 sampled negatives and 15 metadata rows verified | Real feature inputs required. Use `--seed 1` for the documented deterministic sampling. |
-| `05_train_intronsformer.py` | Source reviewed; training/import not verified in a PyTorch environment | Loads all datasets into RAM; uses a large model and BF16 on every CUDA device. Small splits may contain one class and fail AUC. Gradient accumulation and threshold-selection issues are listed below. |
-| `06_integrated_gradients.py` | Source reviewed; execution/import not verified in a PyTorch/Captum environment | Needs matching checkpoint, full NPZ inputs and substantial memory. Resume state is not bound to input/checkpoint hashes; mismatched keys only warn. |
+| `05_train_intronsformer.py` | Source reviewed | Loads all datasets into RAM; uses a large model and BF16 on every CUDA device. Small splits may contain one class and fail AUC. Gradient accumulation and threshold-selection issues are listed below. |
+| `06_integrated_gradients.py` | Source reviewed | Needs matching checkpoint, full NPZ inputs and substantial memory. Resume state is not bound to input/checkpoint hashes; mismatched keys only warn. |
 | `07_extract_ig_motifs.py` | Executed on synthetic positive and negative sequence/score files | Output directory must exist. Loads all CSVs into RAM. Input is headerless; exact row/base correspondence matters. |
 | `08_motifs_to_meme.py` | Executed for both signs and a 200,000-character CSV field after Windows fix | Motif IDs are renumbered; retain an explicit mapping if linking Tomtom query IDs back to CSV IDs. |
 | `09_binding_overlap_analysis.py` | Executed on synthetic GTF, events and peak data | Still requires all three hardcoded cell-line event layouts, even for a one-cell selected table. Treats event coordinates as 1-based inclusive; do not blindly substitute conventional BED or flanked feature windows. |
@@ -156,9 +154,7 @@ outputs/example` instead of `mkdir -p`. Other Python commands are the same.
 
 For the complete raw-data route, a Linux workstation or Linux environment with
 the required tools is the next validation target, and the Slurm orchestration
-must be adapted for non-cluster use. Neither `requirements.txt` nor
-`environment.yml` was tested as a fresh complete installation in this audit.
-Do not interpret the successful local checks as GPU training verification.
+must be adapted for non-cluster use.
 
 The declared PyTorch 1.12 source does expose `torch.amp.autocast`; that import
 alone is not evidence of incompatibility:

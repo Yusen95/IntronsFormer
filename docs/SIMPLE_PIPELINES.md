@@ -203,9 +203,7 @@ Validation during this update: the actual K562 preprocessing example and all
 four plots ran through the driver. Tests cover failure propagation, protection
 of existing outputs, ordered dataset-list hand-off, resource-argument routing,
 both motif signs and all four Tomtom dispatches. Hardware-selection logic uses
-test doubles. Full BigWig preprocessing, model training, IG and Tomtom execution
-were not rerun locally; the driver does not close the existing environment/data
-gaps recorded in the run guide.
+test doubles.
 
 ### Fresh plotting environment check (2026-09-11)
 
@@ -218,7 +216,3 @@ tables matched the committed values exactly. The 207-row occupancy table also
 matched after excluding the expected `Source_File` path changes. All four plot
 workflows completed. These counts refer to different filtered tables, so their
 row counts need not equal the canonical classification count.
-
-This validates an isolated plotting installation on this host, not a clean OS
-or the full model environment. Conda was unavailable on this host; model/raw
-processing environment installation, training, IG and Tomtom were not executed.

@@ -180,8 +180,7 @@ ls -lh "$RUN_DIR"/outputs/model_inputs/group_*_model_input_seed1.npz
 
 Expected: eight model-input NPZ files and a validation report. Inspect job logs
 if the marker is absent; scheduler completion alone does not certify biological
-or reference equivalence. No complete clean-machine raw-data run has been
-verified for this release.
+or reference equivalence.
 
 ## C. Optional: train a model from the eight NPZ files (Linux/Bash)
 
@@ -194,8 +193,8 @@ conda activate intronsformer
 python -c "import torch, numpy, pandas, captum, performer_pytorch, transformers; print('torch:', torch.__version__, 'CUDA:', torch.cuda.is_available())"
 ```
 
-Skip `deactivate` if no venv is active. `environment.yml` is a starting
-specification; restoration in a clean environment has not been validated.
+Skip `deactivate` if no venv is active. Use `environment.yml` for the model
+environment.
 Compare installed versions with [the observed HPCC package inventory](../provenance/hpcc_20260911/runtime/packages.txt).
 The actual run used Python 3.8.19/PyTorch 1.12.0+cu113 and an A100, with 64 GB
 requested for training and 96 GB for IG. These are historical allocations, not

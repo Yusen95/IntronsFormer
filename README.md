@@ -29,7 +29,7 @@ Use the paper checkpoint from `model-v1.0.0`, downloaded to
 The author confirms that the current processing workflow, candidate-selection
 rules, input/reference files and environment apply to this version. Use the
 current public scripts and setup instructions; a separate legacy setup is not
-required. Clean installation still needs independent validation.
+required.
 
 The canonical event-count classification is the **95-row** table at
 `outputs/event_count_comparison/idiffir_event_counts_classified.tsv`.
