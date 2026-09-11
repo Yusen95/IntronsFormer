@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 
 import csv
+import argparse
 import hashlib
 import math
 import statistics
 from pathlib import Path
 
 
-BASE = Path(r"C:\Users\Yusen Zhang\Documents\eCLIP data finding")
+BASE = Path(__file__).resolve().parents[1]
 IN_TSV = BASE / "outputs" / "event_count_comparison" / "idiffir_event_counts_classified.tsv"
 OUT_DIR = BASE / "outputs" / "event_count_comparison"
 
@@ -212,6 +213,20 @@ def make_plot(
 
 
 def main():
+    global IN_TSV, OUT_DIR, ROW_TSV, SUMMARY_TSV, PAIRWISE_TSV, TEXT_OUT, PLOT_SVG
+    parser = argparse.ArgumentParser(description="Summarize a classified iDiffIR event-count TSV.")
+    parser.add_argument("--input", type=Path, default=IN_TSV)
+    parser.add_argument("--out-dir", type=Path, default=OUT_DIR)
+    args = parser.parse_args()
+    IN_TSV, OUT_DIR = args.input, args.out_dir
+    if not IN_TSV.is_file():
+        parser.error(f"Missing classified event-count table: {IN_TSV}")
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    ROW_TSV = OUT_DIR / ROW_TSV.name
+    SUMMARY_TSV = OUT_DIR / SUMMARY_TSV.name
+    PAIRWISE_TSV = OUT_DIR / PAIRWISE_TSV.name
+    TEXT_OUT = OUT_DIR / TEXT_OUT.name
+    PLOT_SVG = OUT_DIR / PLOT_SVG.name
     rows = []
     for row in read_rows():
         group = row_group(row)

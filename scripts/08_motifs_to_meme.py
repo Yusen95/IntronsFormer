@@ -3,9 +3,11 @@
 import argparse
 import csv
 import sys
+from pathlib import Path
 
 
-csv.field_size_limit(sys.maxsize)
+# Windows uses a 32-bit C long even in 64-bit Python.
+csv.field_size_limit(min(sys.maxsize, 2**31 - 1))
 
 ONEHOT = {
     "A": "1.00 0.00 0.00 0.00\n",
@@ -16,6 +18,7 @@ ONEHOT = {
 
 
 def create_meme_file(input_file, meme_output_file):
+    Path(meme_output_file).parent.mkdir(parents=True, exist_ok=True)
     with open(input_file, newline="") as infile, open(meme_output_file, "w") as outfile:
         reader = csv.reader(infile)
         next(reader)

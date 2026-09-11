@@ -158,6 +158,9 @@ def summarize_one(result_path, threshold):
 
 
 def write_tsv(path, rows):
+    parent = os.path.dirname(os.path.abspath(path))
+    if not os.path.isdir(parent):
+        os.makedirs(parent)
     with io.open(path, "w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, delimiter="\t", fieldnames=FIELDS)
         writer.writeheader()

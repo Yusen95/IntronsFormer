@@ -12,6 +12,11 @@ The raw FASTQ-to-model-input Slurm scripts and input manifests are in
 [`hpcc_full_rebuild/`](hpcc_full_rebuild/README.md). These scripts retain the
 original HPCC paths and require the setup described there.
 
+See the [per-script local reproduction check](docs/LOCAL_REPRODUCTION_CHECK.md)
+for tested local commands, platform requirements and remaining blockers. A
+successful processed-data example does not imply that the entire raw-data
+workflow runs without Slurm, external references or the training environment.
+
 1. Collect ENCODE RNA-seq datasets for selected human cell lines.
 2. Quantify intron retention with IRFinder.
 3. Quantify gene expression as FPKM with Cufflinks.

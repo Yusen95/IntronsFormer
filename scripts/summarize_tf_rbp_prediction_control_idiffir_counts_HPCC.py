@@ -212,6 +212,9 @@ def make_row(analysis_type, group, klass, category, target, norm_target, cell_li
 
 
 def write_tsv(path, fields, rows):
+    parent = os.path.dirname(os.path.abspath(path))
+    if not os.path.isdir(parent):
+        os.makedirs(parent)
     with io.open(path, "w", encoding="utf-8") as handle:
         handle.write(u"\t".join(fields) + u"\n")
         for row in rows:

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import csv
+import argparse
 import hashlib
 import json
 import re
@@ -21,12 +22,12 @@ OUT_DIR = Path("outputs") / "knockdown"
 CACHE_DIR = OUT_DIR / "encode_api_cache"
 
 INPUTS = {
-    ("TF", "positive"): Path(r"C:\Users\Yusen Zhang\Downloads\tf_positive.csv"),
-    ("TF", "negative"): Path(r"C:\Users\Yusen Zhang\Downloads\tf_negative.csv"),
-    ("TF", "neutral"): Path(r"C:\Users\Yusen Zhang\Downloads\tf_neutral.csv"),
-    ("RBP", "positive"): Path(r"C:\Users\Yusen Zhang\Downloads\rbp_positive.csv"),
-    ("RBP", "negative"): Path(r"C:\Users\Yusen Zhang\Downloads\rbp_negative.csv"),
-    ("RBP", "neutral"): Path(r"C:\Users\Yusen Zhang\Downloads\rbp_neutral.csv"),
+    ("TF", "positive"): Path("tf_positive.csv"),
+    ("TF", "negative"): Path("tf_negative.csv"),
+    ("TF", "neutral"): Path("tf_neutral.csv"),
+    ("RBP", "positive"): Path("rbp_positive.csv"),
+    ("RBP", "negative"): Path("rbp_negative.csv"),
+    ("RBP", "neutral"): Path("rbp_neutral.csv"),
 }
 
 ALIASES = {
@@ -510,6 +511,18 @@ def write_run_script(path: Path, selected: list[dict], fastq_rows: list[dict]) -
 
 
 def main() -> None:
+    global INPUTS, OUT_DIR, CACHE_DIR
+    parser = argparse.ArgumentParser(description="Select ENCODE knockdown experiments from six candidate CSVs.")
+    parser.add_argument("--input-dir", type=Path, required=True,
+                        help="Directory containing tf/rbp_positive, negative and neutral CSVs, each with a tf_name column.")
+    parser.add_argument("--out-dir", type=Path, default=OUT_DIR)
+    args = parser.parse_args()
+    INPUTS = {key: args.input_dir / path.name for key, path in INPUTS.items()}
+    OUT_DIR = args.out_dir
+    CACHE_DIR = OUT_DIR / "encode_api_cache"
+    missing = [str(path) for path in INPUTS.values() if not path.is_file()]
+    if missing:
+        parser.error("Missing candidate CSVs: " + ", ".join(missing))
     OUT_DIR.mkdir(parents=True, exist_ok=True)
 
     targets = input_targets()

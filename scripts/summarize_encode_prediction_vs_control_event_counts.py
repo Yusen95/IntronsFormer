@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 
 import csv
+import argparse
 import hashlib
 import math
 import statistics
 from pathlib import Path
 
 
-ROOT = Path(r"C:\Users\Yusen Zhang\Documents\eCLIP data finding")
+ROOT = Path(__file__).resolve().parents[1]
 COUNTS_TSV = ROOT / "outputs" / "event_count_comparison" / "idiffir_event_counts_classified.tsv"
 ENCODE_SUPPORTED_TSV = (
     ROOT
@@ -194,6 +195,22 @@ def make_plot(rows):
 
 
 def main():
+    global COUNTS_TSV, ENCODE_SUPPORTED_TSV, OUT_DIR, ROW_TSV, SUMMARY_TSV, TEST_TSV, TEXT_OUT, PLOT_SVG
+    parser = argparse.ArgumentParser(description="Filter classified counts using an ENCODE-support TSV.")
+    parser.add_argument("--counts", type=Path, default=COUNTS_TSV)
+    parser.add_argument("--support", type=Path, default=ENCODE_SUPPORTED_TSV)
+    parser.add_argument("--out-dir", type=Path, default=OUT_DIR)
+    args = parser.parse_args()
+    COUNTS_TSV, ENCODE_SUPPORTED_TSV, OUT_DIR = args.counts, args.support, args.out_dir
+    for path in (COUNTS_TSV, ENCODE_SUPPORTED_TSV):
+        if not path.is_file():
+            parser.error(f"Missing input table: {path}")
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    ROW_TSV = OUT_DIR / ROW_TSV.name
+    SUMMARY_TSV = OUT_DIR / SUMMARY_TSV.name
+    TEST_TSV = OUT_DIR / TEST_TSV.name
+    TEXT_OUT = OUT_DIR / TEXT_OUT.name
+    PLOT_SVG = OUT_DIR / PLOT_SVG.name
     counts = read_tsv(COUNTS_TSV)
     support_by_result_dir = {
         row["result_dir"]: row
