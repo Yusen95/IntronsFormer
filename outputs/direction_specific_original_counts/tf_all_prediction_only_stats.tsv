@@ -1,0 +1,2 @@
+type	panel	metric	prediction_n	prediction_mean	prediction_median	control_n	control_mean	control_median	observed_mean_diff	n_permutations	permutation_mode	p_two_sided
+TF	All TF prediction	all_events	5	344.2	409.0	15	213.4	198.0	130.79999999999998	15504	exact	0.006643446852425181

@@ -1,0 +1,5 @@
+ls: cannot access '/rhome/yzhan677/bigdata/IntronsFormer_full_rebuild_20260830/interpretability_local_ig_tomtom_20260902/outputs/tomtom/*/matched_factors.csv': No such file or directory
+/rhome/yzhan677/bigdata/IntronsFormer_full_rebuild_20260830/training_hpcc_exp3b_2conv_seed42_20260901/logs/:
+total 1
+-rw-r--r-- 1 yzhan677 wmalab  244 Sep  1 03:47 train_27986231.err
+-rw-r--r-- 1 yzhan677 wmalab 2527 Sep  2 11:48 train_27986231.out

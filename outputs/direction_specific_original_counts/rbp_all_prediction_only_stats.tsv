@@ -1,0 +1,2 @@
+type	panel	metric	prediction_n	prediction_mean	prediction_median	control_n	control_mean	control_median	observed_mean_diff	n_permutations	permutation_mode	random_seed	p_two_sided
+RBP	All RBP prediction	all_events	43	260.0232558139535	191.0	8	245.875	236.5	14.148255813953483	200000	monte_carlo	20260701	0.7494162529187354

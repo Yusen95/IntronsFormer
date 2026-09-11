@@ -1,0 +1,9 @@
+total 4
+lrwxrwxrwx 1 yzhan677 wmalab 116 Sep  2 19:16 group_GM12878_raw.npz -> /rhome/yzhan677/bigdata/IntronsFormer_full_rebuild_20260830/outputs/model_inputs/group_GM12878_model_input_seed1.npz
+lrwxrwxrwx 1 yzhan677 wmalab 116 Sep  2 19:16 group_GM23248_raw.npz -> /rhome/yzhan677/bigdata/IntronsFormer_full_rebuild_20260830/outputs/model_inputs/group_GM23248_model_input_seed1.npz
+lrwxrwxrwx 1 yzhan677 wmalab 111 Sep  2 19:16 group_H1_raw.npz -> /rhome/yzhan677/bigdata/IntronsFormer_full_rebuild_20260830/outputs/model_inputs/group_H1_model_input_seed1.npz
+lrwxrwxrwx 1 yzhan677 wmalab 116 Sep  2 19:16 group_HeLa-S3_raw.npz -> /rhome/yzhan677/bigdata/IntronsFormer_full_rebuild_20260830/outputs/model_inputs/group_HeLa-S3_model_input_seed1.npz
+lrwxrwxrwx 1 yzhan677 wmalab 114 Sep  2 19:16 group_HepG2_raw.npz -> /rhome/yzhan677/bigdata/IntronsFormer_full_rebuild_20260830/outputs/model_inputs/group_HepG2_model_input_seed1.npz
+lrwxrwxrwx 1 yzhan677 wmalab 115 Sep  2 19:16 group_IMR-90_raw.npz -> /rhome/yzhan677/bigdata/IntronsFormer_full_rebuild_20260830/outputs/model_inputs/group_IMR-90_model_input_seed1.npz
+lrwxrwxrwx 1 yzhan677 wmalab 113 Sep  2 19:16 group_K562_raw.npz -> /rhome/yzhan677/bigdata/IntronsFormer_full_rebuild_20260830/outputs/model_inputs/group_K562_model_input_seed1.npz
+lrwxrwxrwx 1 yzhan677 wmalab 116 Sep  2 19:16 group_SK-N-SH_raw.npz -> /rhome/yzhan677/bigdata/IntronsFormer_full_rebuild_20260830/outputs/model_inputs/group_SK-N-SH_model_input_seed1.npz

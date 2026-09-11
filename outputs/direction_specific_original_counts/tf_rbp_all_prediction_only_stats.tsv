@@ -1,0 +1,3 @@
+type	panel	metric	prediction_n	prediction_mean	prediction_median	control_n	control_mean	control_median	observed_mean_diff	n_permutations	permutation_mode	p_two_sided	random_seed
+TF	All TF prediction	all_events	5	344.2	409.0	15	213.4	198.0	130.79999999999998	15504	exact	0.006643446852425181	
+RBP	All RBP prediction	all_events	43	260.0232558139535	191.0	8	245.875	236.5	14.148255813953483	200000	monte_carlo	0.7494162529187354	20260701.0

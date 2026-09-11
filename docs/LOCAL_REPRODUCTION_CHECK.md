@@ -1,5 +1,12 @@
 # Per-script local reproduction check
 
+**Later update, same date:** [PLOT_CODE_SYNC.md](PLOT_CODE_SYNC.md) covers the
+additional plotting/preparation scripts, restored input tables and successful
+replotting checks. [The HPCC snapshot](../provenance/hpcc_20260911/README.md)
+now preserves the actual frozen code and observed environment. The table below
+is the earlier 18-script audit; a clean installation and a complete raw-data
+rerun remain unverified.
+
 Checked 2026-09-11 against commit `6dca3e3`, plus the portability fixes described
 below. Scope: all 18 tracked Python analysis scripts and all nine tracked
 Shell/Slurm scripts. The untracked manuscript PDF-label helper is addressed

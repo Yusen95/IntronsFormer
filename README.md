@@ -6,6 +6,11 @@ The repository is organized as a reproducibility workflow rather than a standalo
 
 ## Workflow Overview
 
+Latest cross-project plotting scripts, their required input tables and local
+rerun commands are documented in [the plotting synchronization guide](docs/PLOT_CODE_SYNC.md).
+The [actual September HPCC code snapshot](provenance/hpcc_20260911/README.md)
+includes source hashes, runtime versions and rebuilt checkpoint identity.
+
 For the complete input-to-results map, including the August–September 2026
 rebuild and remaining release gaps, see [the full workflow guide](docs/FULL_WORKFLOW.md).
 The raw FASTQ-to-model-input Slurm scripts and input manifests are in

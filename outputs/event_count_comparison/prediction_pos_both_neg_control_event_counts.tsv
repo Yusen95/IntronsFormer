@@ -85,7 +85,7 @@ RBP	prediction	positive_and_negative	U2AF2		U2AF2	U2AF2_result	191	159	32	ok	rbp
 RBP	prediction	positive_and_negative	U2AF2	HepG2	U2AF2_HepG2	U2AF2_result_HepG2	173	150	23	ok	rbp_in_both_pos_neg	positive_and_negative	IR-nonIR TF/RBP
 TF	control	random_tf_control	USF1	K562	USF1_K562	USF1_K562_result	180	52	128	ok		control	control
 TF	control	random_tf_control	USF2	K562	USF2_K562	USF2_K562_result	372	248	124	ok		control	control
-RBP	prediction	negative	YBX1		YBX1	YBX1_result	412	214	198	ok		negative	non-IR TF/RBP
+RBP	prediction	negative	YBX1	K562	YBX1	YBX1_result	412	214	198	ok		negative	non-IR TF/RBP
 RBP	prediction	negative	YBX1	HepG2	YBX1_HepG2	YBX1_result_HepG2	178	53	125	ok		negative	non-IR TF/RBP
 RBP	prediction	negative	YBX3	HepG2	YBX3_HepG2	YBX3_HepG2_result	176	65	111	ok		negative	non-IR TF/RBP
 TF	prediction	positive_and_negative	ZEB1		ZEB1	ZEB1_result	188	70	118	ok	tf_in_both_pos_neg	positive_and_negative	IR-nonIR TF/RBP

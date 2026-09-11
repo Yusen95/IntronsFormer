@@ -136,15 +136,30 @@ intron BEDs under `Project1/IRevent/` and `Project1/nonIRevent/`. Do not silentl
 substitute flanked feature windows. The new-run hand-off and candidate-list
 derivation need an explicit reviewed mapping.
 
+## Recovery update (2026-09-11)
+
+The five frozen Python scripts and three final Slurm wrappers have now been
+recovered with byte-for-byte SHA256 verification in
+[`provenance/hpcc_20260911/`](../provenance/hpcc_20260911/README.md).
+That snapshot also records the observed package versions, both motif database
+hashes, the matching training/IG checkpoint hash and all eight staging symlinks.
+It supersedes earlier instructions above to recover those particular files.
+The missing Tomtom-to-factor mapping entry point is now
+`scripts/tomtom_to_tf.py`; use the original wrapper to inspect its four calls.
+
+At 08:13 UTC, the corrected Tomtom job was still running. The latest historical
+plotting code and its required tables are covered separately in
+[`PLOT_CODE_SYNC.md`](PLOT_CODE_SYNC.md), without assigning manuscript figure numbers.
+
 ## Remaining files to archive from the successful run
 
-- Frozen training/IG/motif/Tomtom Python scripts and final Slurm wrappers.
-- Actual reference configuration and tool/environment exports.
+- Actual reference configuration and a tested clean environment installation.
 - Model-input validation report, file hashes and per-cell counts.
 - Ordered input list, training split, evaluation outputs and checkpoint hash.
 - IG selection/done metadata and reconciled sequence/score counts.
-- Both motif database identities, four Tomtom outputs and candidate derivation.
-- A paper figure/table inventory with commands and input/output versions.
+- Four completed Tomtom outputs and candidate derivation (database hashes recovered).
+- The historical four candidate-list versions used by the knockdown classifier.
+- A paper figure/table inventory, if requested separately; plotting commands and inputs are now documented.
 
 This guide describes available code and recorded behavior. It is not a claim
 that a clean checkout has already passed the complete raw-input-to-paper workflow.

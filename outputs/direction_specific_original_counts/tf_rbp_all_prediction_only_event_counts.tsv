@@ -1,0 +1,72 @@
+type	group	target	cell_line	run_id	result_dir	all_events
+TF	prediction	MAZ		MAZ	MAZ_result	109.0
+TF	prediction	NR4A1		NR4A1	NR4A1_result	341.0
+TF	prediction	SP1		SP1	SP1_result	409.0
+TF	prediction	ZNF180		ZNF180	ZNF180_result	427.0
+TF	prediction	ZNF384		ZNF384	ZNF384_result	435.0
+TF	control	BACH1	K562	BACH1_K562	BACH1_K562_result	171.0
+TF	control	FOXM1	K562	FOXM1_K562	FOXM1_K562_result	252.0
+TF	control	GATA2	K562	GATA2_K562	GATA2_K562_result	235.0
+TF	control	HSF1	K562	HSF1_K562	HSF1_K562_result	200.0
+TF	control	LIN28B	K562	LIN28B_K562	LIN28B_K562_result	198.0
+TF	control	MITF	K562	MITF_K562	MITF_K562_result	183.0
+TF	control	NFATC1	K562	NFATC1_K562	NFATC1_K562_result	132.0
+TF	control	NFE2L1	K562	NFE2L1_K562	NFE2L1_K562_result	254.0
+TF	control	NFYB	K562	NFYB_K562	NFYB_K562_result	276.0
+TF	control	RELA	K562	RELA_K562	RELA_K562_result	176.0
+TF	control	SRF	K562	SRF_K562	SRF_K562_result	184.0
+TF	control	STAT1	K562	STAT1_K562	STAT1_K562_result	185.0
+TF	control	STAT6	K562	STAT6_K562	STAT6_K562_result	203.0
+TF	control	USF1	K562	USF1_K562	USF1_K562_result	180.0
+TF	control	USF2	K562	USF2_K562	USF2_K562_result	372.0
+RBP	prediction	CPEB4		CPEB4	CPEB4_result	412.0
+RBP	prediction	DAZAP1		DAZAP1	DAZAP1_result	458.0
+RBP	prediction	DAZAP1	HepG2	DAZAP1_HepG2	DAZAP1_result_HepG2	148.0
+RBP	prediction	EIF2S1		EIF2S1	EIF2S1_result	407.0
+RBP	prediction	EIF2S1	HepG2	EIF2S1_HepG2	EIF2S1_result_HepG2	150.0
+RBP	prediction	FMR1	K562	FMR1_K562	FMR1_K562_result	174.0
+RBP	prediction	FXR2	K562	FXR2_K562	FXR2_K562_result	157.0
+RBP	prediction	HNRNPC		HNRNPC	HNRNPC_result	179.0
+RBP	prediction	HNRNPC	HepG2	HNRNPC_HepG2	HNRNPC_result_HepG2	118.0
+RBP	prediction	HNRNPLL	HepG2	HNRNPLL_HepG2	HNRNPLL_HepG2_result	172.0
+RBP	prediction	HNRNPL	K562	HNRNPL_K562	HNRNPL_K562_result	272.0
+RBP	prediction	KHDRBS1	HepG2	KHDRBS1_HepG2	KHDRBS1_HepG2_result	287.0
+RBP	prediction	MATR3		MATR3	MATR3_result	464.0
+RBP	prediction	MATR3	HepG2	MATR3_HepG2	MATR3_result_HepG2	110.0
+RBP	prediction	MBNL1		MBNL1	MBNL1_result	393.0
+RBP	prediction	NONO		NONO	NONO_result	452.0
+RBP	prediction	NONO	HepG2	NONO_HepG2	NONO_result_HepG2	110.0
+RBP	prediction	PABPC1	K562	PABPC1_K562	PABPC1_K562_result	221.0
+RBP	prediction	PABPC4		PABPC4	PABPC4_result	349.0
+RBP	prediction	PABPC4	HepG2	PABPC4_HepG2	PABPC4_result_HepG2	183.0
+RBP	prediction	PCBP1		PCBP1	PCBP1_result	383.0
+RBP	prediction	PCBP1	HepG2	PCBP1_HepG2	PCBP1_result_HepG2	133.0
+RBP	prediction	PCBP2		PCBP2	PCBP2_result	393.0
+RBP	prediction	PCBP2	HepG2	PCBP2_HepG2	PCBP2_result_HepG2	154.0
+RBP	prediction	PCBP3		PCBP3	PCBP3_result	406.0
+RBP	prediction	PTBP1	K562	PTBP1_K562	PTBP1_K562_result	314.0
+RBP	prediction	RBM8A		RBM8A	RBM8A_result	356.0
+RBP	prediction	SF3B4		SF3B4	SF3B4_result	321.0
+RBP	prediction	SF3B4	HepG2	SF3B4_HepG2	SF3B4_result_HepG2	145.0
+RBP	prediction	SNRNP70	HepG2	SNRNP70_HepG2	SNRNP70_result_HepG2	119.0
+RBP	prediction	SRSF4		SRSF4	SRSF4_result	318.0
+RBP	prediction	SRSF4	HepG2	SRSF4_HepG2	SRSF4_result_HepG2	186.0
+RBP	prediction	SRSF7		SRSF7	SRSF7_result	377.0
+RBP	prediction	SRSF7	HepG2	SRSF7_HepG2	SRSF7_result_HepG2	83.0
+RBP	prediction	SRSF9		SRSF9	SRSF9_result	413.0
+RBP	prediction	SRSF9	HepG2	SRSF9_HepG2	SRSF9_result_HepG2	148.0
+RBP	prediction	TIA1		TIA1	TIA1_result	402.0
+RBP	prediction	TIA1	HepG2	TIA1_HepG2	TIA1_result_HepG2	184.0
+RBP	prediction	U2AF2		U2AF2	U2AF2_result	191.0
+RBP	prediction	U2AF2	HepG2	U2AF2_HepG2	U2AF2_result_HepG2	173.0
+RBP	prediction	YBX1	K562	YBX1	YBX1_result	412.0
+RBP	prediction	YBX1	HepG2	YBX1_HepG2	YBX1_result_HepG2	178.0
+RBP	prediction	YBX3	HepG2	YBX3_HepG2	YBX3_HepG2_result	176.0
+RBP	control	ACO1	HepG2	ACO1_HepG2	ACO1_HepG2_result	250.0
+RBP	control	EIF4B	K562	EIF4B_K562	EIF4B_K562_result	217.0
+RBP	control	FUS	HepG2	FUS_HepG2	FUS_HepG2_result	224.0
+RBP	control	FXR1	K562	FXR1_K562	FXR1_K562_result	309.0
+RBP	control	G3BP2	HepG2	G3BP2_HepG2	G3BP2_HepG2_result	198.0
+RBP	control	HNRNPK	HepG2	HNRNPK_HepG2	HNRNPK_HepG2_result	249.0
+RBP	control	RBM3	K562	RBM3_K562	RBM3_K562_result	318.0
+RBP	control	TARDBP	HepG2	TARDBP_HepG2	TARDBP_HepG2_result	202.0

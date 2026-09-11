@@ -1,0 +1,5 @@
+  48623 /rhome/yzhan677/bigdata/IntronsFormer_full_rebuild_20260830/interpretability_local_ig_tomtom_20260902/staging/ig_all_pos.done
+ 189740 /rhome/yzhan677/bigdata/IntronsFormer_full_rebuild_20260830/interpretability_local_ig_tomtom_20260902/staging/ig_all_neg.done
+ 238363 total
+ls: cannot access '/rhome/yzhan677/bigdata/IntronsFormer_full_rebuild_20260830/interpretability_local_ig_tomtom_20260902/outputs/INTERPRETABILITY_COMPLETE': No such file or directory
+-rw-r--r-- 1 yzhan677 wmalab 0 Sep 10 23:53 /rhome/yzhan677/bigdata/IntronsFormer_full_rebuild_20260830/interpretability_local_ig_tomtom_20260902/outputs/IG_COMPLETE

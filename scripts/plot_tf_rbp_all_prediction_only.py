@@ -4,15 +4,12 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from PIL import Image, ImageDraw
 
-from plot_tf_only_prediction_vs_control import (
-    COLORS,
-    draw_centered_text,
-    draw_mean_box,
-    draw_rotated_ylabel,
-    font,
-    p_label,
+from make_publication_ir_ratio_figures import (
+    CLASS_COLORS,
+    FigureCanvas,
+    finite,
+    nice_ticks,
 )
 
 
@@ -29,6 +26,8 @@ OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 N_PERMUTATIONS = 200000
 SEED = 20260701
+FIGURE_SVG_OUT = OUT_DIR / "Figure7.svg"
+FIGURE_PNG_OUT = OUT_DIR / "Figure7.png"
 
 
 def exact_permutation(a, b):
@@ -119,178 +118,157 @@ def run_stats(data, factor_type):
     }
 
 
-def draw_single_panel(data, stat, factor_type, out_png):
-    width, height = 850, 820
-    margin_left, margin_right = 120, 50
-    margin_top, margin_bottom = 130, 125
-    plot_left = margin_left
-    plot_right = width - margin_right
-    plot_top = margin_top
-    plot_bottom = height - margin_bottom
-    plot_height = plot_bottom - plot_top
+def box_stats_min_max(values):
+    values = finite(values)
+    q1, q3 = np.quantile(values, [0.25, 0.75])
+    return {
+        "q1": float(q1),
+        "q3": float(q3),
+        "low": float(values.min()),
+        "high": float(values.max()),
+    }
 
-    image = Image.new("RGB", (width, height), "white")
-    draw = ImageDraw.Draw(image)
-    label_font = font(25)
-    small_font = font(21)
-    tick_font = font(22)
-    legend_font = font(22)
 
-    ymax = max(data["all_events"].astype(float).max(), 1) * 1.22
+def sig3(value):
+    return f"{float(value):.3g}"
 
-    def y_to_px(value):
-        return plot_bottom - (float(value) / ymax) * plot_height
 
-    axis = (17, 24, 39)
-    grid = (229, 231, 235)
-    for tick in np.linspace(0, ymax / 1.22, 6):
-        y = y_to_px(tick)
-        draw.line([plot_left, y, plot_right, y], fill=grid, width=2)
-        draw.text((plot_left - 16, y), f"{int(round(tick))}", fill=(55, 65, 81), font=tick_font, anchor="rm")
-    draw.line([plot_left, plot_bottom, plot_right, plot_bottom], fill=axis, width=2)
-    draw.line([plot_left, plot_top, plot_left, plot_bottom], fill=axis, width=2)
+def group_label(factor_type, group):
+    if group == "prediction":
+        return f"{factor_type} candidates"
+    return f"control {factor_type}s"
 
-    center = (plot_left + plot_right) / 2
-    box_width = 76
-    offsets = {"prediction": -52, "control": 52}
-    for group in ["prediction", "control"]:
-        vals = data.loc[data["group"] == group, "all_events"].dropna().astype(float).values
-        label_side = "left" if group == "prediction" else "right"
-        draw_mean_box(
-            draw,
-            vals,
-            center + offsets[group],
-            box_width,
-            y_to_px,
-            COLORS[group],
-            small_font,
-            label_side,
-            center_stat="mean",
+
+def draw_panels(data, stats, factor_types, svg_out, png_out):
+    panel_w = 455
+    panel_h = 350
+    left = 70
+    right = 20
+    top = 52
+    bottom = 82
+    legend_w = 60
+    width = panel_w * len(factor_types) + (legend_w if len(factor_types) > 1 else 0)
+    height = panel_h + 25
+
+    max_value = max(float(data["all_events"].max()), 1.0)
+    ticks = nice_ticks(0.0, max_value * 1.16, count=7)
+    y_low = 0.0
+    y_high = max(ticks)
+
+    def y_map(value, plot_y, plot_h):
+        return plot_y + plot_h - (float(value) - y_low) / (y_high - y_low) * plot_h
+
+    canvas = FigureCanvas(width, height)
+    rng = np.random.default_rng(67)
+    panel_letters = {"TF": "(a)", "RBP": "(b)"}
+    colors = {
+        "prediction": CLASS_COLORS["positive_only"],
+        "control": CLASS_COLORS["control"],
+    }
+
+    for panel_i, factor_type in enumerate(factor_types):
+        x0 = panel_i * panel_w
+        y0 = 18
+        plot_x = x0 + left
+        plot_y = y0 + top
+        plot_w = panel_w - left - right
+        plot_h = panel_h - top - bottom
+        panel = data[data["type"] == factor_type]
+
+        canvas.rect(
+            x0 + 10,
+            y0 + 8,
+            x0 + panel_w - 10,
+            y0 + panel_h - 8,
+            "#FFFFFF",
+            stroke="#D1D5DB",
         )
+        canvas.text(x0 + 20, y0 + 28, panel_letters[factor_type], 11, anchor="start", bold=True)
+        canvas.text(x0 + panel_w / 2, y0 + 28, factor_type, 13, bold=True)
 
-    panel_label = "All predicted TFs" if factor_type == "TF" else factor_type
-    draw_centered_text(draw, (center, plot_bottom + 42), panel_label, (17, 24, 39), label_font)
-    data_max = data["all_events"].astype(float).max()
-    p_y = y_to_px(data_max * 1.08)
-    draw_centered_text(draw, (center, p_y - 12), p_label(stat["p_two_sided"], "Permutation p"), (55, 65, 81), small_font)
-    draw_rotated_ylabel(image, "Event count", (16, int(height / 2 - 145)), label_font)
+        for tick in ticks:
+            if y_low <= tick <= y_high:
+                ty = y_map(tick, plot_y, plot_h)
+                canvas.line(plot_x, ty, plot_x + plot_w, ty, "#E5E7EB", width=0.8)
+                canvas.text(plot_x - 8, ty + 3, f"{tick:g}", 9, anchor="end", fill="#4B5563")
+        canvas.line(plot_x, plot_y + plot_h, plot_x + plot_w, plot_y + plot_h, "#111827")
+        canvas.line(plot_x, plot_y, plot_x, plot_y + plot_h, "#111827")
 
-    legend_y = 95
-    legend_x = 80
-    for i, (name, color) in enumerate([("Prediction", COLORS["prediction"]), ("Control", COLORS["control"])]):
-        x = legend_x + i * 172
-        draw.ellipse([x, legend_y - 9, x + 18, legend_y + 9], fill=color)
-        draw.text((x + 30, legend_y), name, fill=(17, 24, 39), font=legend_font, anchor="lm")
-    mean_x = legend_x + 345
-    draw.line([mean_x, legend_y, mean_x + 34, legend_y], fill=(17, 24, 39), width=4)
-    draw.text((mean_x + 46, legend_y), "Mean", fill=(17, 24, 39), font=legend_font, anchor="lm")
-    image.save(out_png)
+        group_step = plot_w / 2
+        centers = {}
+        for group_i, group in enumerate(["prediction", "control"]):
+            values = finite(panel.loc[panel["group"] == group, "all_events"])
+            cx = plot_x + group_step * (group_i + 0.5)
+            centers[group] = cx
+            color = colors[group]
+            box = box_stats_min_max(values)
+            mean_value = float(np.mean(values))
+            box_w = min(46, group_step * 0.42)
+            q1_y = y_map(box["q1"], plot_y, plot_h)
+            q3_y = y_map(box["q3"], plot_y, plot_h)
+            mean_y = y_map(mean_value, plot_y, plot_h)
+            low_y = y_map(box["low"], plot_y, plot_h)
+            high_y = y_map(box["high"], plot_y, plot_h)
 
-
-def combine_images(tf_png, rbp_png, out_png):
-    tf = Image.open(tf_png).convert("RGB")
-    rbp = Image.open(rbp_png).convert("RGB")
-    gap = 70
-    left_pad = 40
-    right_pad = 40
-    width = left_pad + tf.width + gap + rbp.width + right_pad
-    height = max(tf.height, rbp.height) + 80
-    canvas = Image.new("RGB", (width, height), "white")
-    canvas.paste(tf, (left_pad, 40))
-    canvas.paste(rbp, (left_pad + tf.width + gap, 40))
-    canvas.save(out_png)
-
-
-def draw_combined_panel(data, stats, out_png):
-    width, height = 1300, 820
-    margin_left, margin_right = 130, 60
-    margin_top, margin_bottom = 130, 125
-    plot_left = margin_left
-    plot_right = width - margin_right
-    plot_top = margin_top
-    plot_bottom = height - margin_bottom
-    plot_width = plot_right - plot_left
-    plot_height = plot_bottom - plot_top
-
-    image = Image.new("RGB", (width, height), "white")
-    draw = ImageDraw.Draw(image)
-    label_font = font(25)
-    small_font = font(21)
-    tick_font = font(22)
-    legend_font = font(22)
-
-    ymax = max(data["all_events"].astype(float).max(), 1) * 1.22
-
-    def y_to_px(value):
-        return plot_bottom - (float(value) / ymax) * plot_height
-
-    axis = (17, 24, 39)
-    grid = (229, 231, 235)
-    for tick in np.linspace(0, ymax / 1.22, 6):
-        y = y_to_px(tick)
-        draw.line([plot_left, y, plot_right, y], fill=grid, width=2)
-        draw.text((plot_left - 16, y), f"{int(round(tick))}", fill=(55, 65, 81), font=tick_font, anchor="rm")
-    draw.line([plot_left, plot_bottom, plot_right, plot_bottom], fill=axis, width=2)
-    draw.line([plot_left, plot_top, plot_left, plot_bottom], fill=axis, width=2)
-
-    centers = {
-        "TF": plot_left + plot_width * 0.32,
-        "RBP": plot_right - plot_width * 0.32,
-    }
-    labels = {
-        "TF": "All predicted TFs",
-        "RBP": "All predicted RBPs",
-    }
-    box_width = 76
-    offsets = {"prediction": -52, "control": 52}
-
-    for factor_type in ["TF", "RBP"]:
-        sub = data[data["type"] == factor_type]
-        stat = stats[stats["type"] == factor_type].iloc[0]
-        center = centers[factor_type]
-        for group in ["prediction", "control"]:
-            vals = sub.loc[sub["group"] == group, "all_events"].dropna().astype(float).values
-            label_side = "left" if group == "prediction" else "right"
-            draw_mean_box(
-                draw,
-                vals,
-                center + offsets[group],
-                box_width,
-                y_to_px,
-                COLORS[group],
-                small_font,
-                label_side,
-                center_stat="mean",
+            canvas.line(cx, high_y, cx, low_y, color, width=1.5)
+            canvas.line(cx - box_w / 3, high_y, cx + box_w / 3, high_y, color, width=1.5)
+            canvas.line(cx - box_w / 3, low_y, cx + box_w / 3, low_y, color, width=1.5)
+            canvas.rect(
+                cx - box_w / 2,
+                min(q1_y, q3_y),
+                cx + box_w / 2,
+                max(q1_y, q3_y),
+                color,
+                stroke=color,
+                opacity=0.28,
+                width=1.2,
             )
-        draw_centered_text(draw, (center, plot_bottom + 42), labels[factor_type], (17, 24, 39), label_font)
-        data_max = sub["all_events"].astype(float).max()
-        p_y = y_to_px(data_max * 1.08)
-        draw_centered_text(
-            draw,
-            (center, p_y - 12),
-            p_label(stat["p_two_sided"], "Permutation p"),
-            (55, 65, 81),
-            small_font,
+            canvas.line(cx - box_w / 2, mean_y, cx + box_w / 2, mean_y, "#111111", width=1.8)
+
+            for value in values:
+                canvas.circle(
+                    cx + float(rng.normal(0, 6.0)),
+                    y_map(value, plot_y, plot_h),
+                    3.4,
+                    color,
+                    stroke="#FFFFFF",
+                    width=0.9,
+                    opacity=0.82,
+                )
+            canvas.text(cx, mean_y - 6, sig3(mean_value), 8, fill="#111111", bold=True)
+            canvas.text(cx, plot_y + plot_h + 20, group_label(factor_type, group), 9)
+
+        stat = stats[stats["type"] == factor_type].iloc[0]
+        x1, x2 = centers["prediction"], centers["control"]
+        bracket_y = plot_y + 16
+        tick_h = 7
+        canvas.line(x1, bracket_y + tick_h, x1, bracket_y, "#111111", width=1)
+        canvas.line(x1, bracket_y, x2, bracket_y, "#111111", width=1)
+        canvas.line(x2, bracket_y, x2, bracket_y + tick_h, "#111111", width=1)
+        canvas.text(
+            (x1 + x2) / 2,
+            bracket_y - 5,
+            f"Permutation p={sig3(stat['p_two_sided'])}",
+            9,
+            bold=True,
         )
 
-    draw_rotated_ylabel(image, "Event count", (16, int(height / 2 - 145)), label_font)
+        if len(factor_types) == 1 or panel_i == 0:
+            canvas.text(
+                x0 + 18,
+                plot_y + plot_h / 2,
+                "Differential IR event count",
+                10,
+                rotate=-90,
+            )
 
-    legend_y = 95
-    legend_x = 85
-    for i, (name, color) in enumerate([("Prediction", COLORS["prediction"]), ("Control", COLORS["control"])]):
-        x = legend_x + i * 172
-        draw.ellipse([x, legend_y - 9, x + 18, legend_y + 9], fill=color)
-        draw.text((x + 30, legend_y), name, fill=(17, 24, 39), font=legend_font, anchor="lm")
-    mean_x = legend_x + 345
-    draw.line([mean_x, legend_y, mean_x + 34, legend_y], fill=(17, 24, 39), width=4)
-    draw.text((mean_x + 46, legend_y), "Mean", fill=(17, 24, 39), font=legend_font, anchor="lm")
-    image.save(out_png)
+    canvas.save(svg_out, png_out)
+    return svg_out, png_out
 
 
 def main():
     all_data = []
     stats = []
-    pngs = {}
     for factor_type, input_path in [("TF", TF_INPUT), ("RBP", RBP_INPUT)]:
         df = pd.read_csv(input_path, sep="\t").fillna("")
         data = build_data(df, factor_type)
@@ -299,9 +277,6 @@ def main():
         stats.append(stat)
         data.to_csv(OUT_DIR / f"{factor_type.lower()}_all_prediction_only_event_counts.tsv", sep="\t", index=False)
         pd.DataFrame([stat]).to_csv(OUT_DIR / f"{factor_type.lower()}_all_prediction_only_stats.tsv", sep="\t", index=False)
-        png = OUT_DIR / f"{factor_type.lower()}_all_prediction_only.png"
-        draw_single_panel(data, stat, factor_type, png)
-        pngs[factor_type] = png
 
     combined_data = pd.concat(all_data, ignore_index=True)
     combined_stats = pd.DataFrame(stats)
@@ -309,9 +284,15 @@ def main():
         OUT_DIR / "tf_rbp_all_prediction_only_event_counts.tsv", sep="\t", index=False
     )
     combined_stats.to_csv(OUT_DIR / "tf_rbp_all_prediction_only_stats.tsv", sep="\t", index=False)
-    combined = OUT_DIR / "tf_rbp_all_prediction_only.png"
-    draw_combined_panel(combined_data, combined_stats, combined)
-    print(f"Wrote {combined}")
+    svg, png = draw_panels(
+        combined_data,
+        combined_stats,
+        ["TF", "RBP"],
+        FIGURE_SVG_OUT,
+        FIGURE_PNG_OUT,
+    )
+    print(f"Wrote {svg}")
+    print(f"Wrote {png}")
     print(combined_stats[["type", "prediction_n", "prediction_mean", "control_n", "control_mean", "p_two_sided"]].to_string(index=False))
 
 

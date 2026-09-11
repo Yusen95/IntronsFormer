@@ -14,6 +14,7 @@ __pycache__/
 
 # Local environments
 .venv/
+.venv-plots/
 venv/
 env/
 

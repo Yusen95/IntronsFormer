@@ -1,0 +1,2 @@
+c5a9e191062512c60e79505916ef22d6e971969adfdb7f6dad2f0c319e80e7ad  /rhome/yzhan677/bigdata/CIS-BP/Homo_sapiens_2.0.meme
+a438572bb7894b0a8de30c5068a59f7702beeabcb143e71109c91a91232ed211  /rhome/yzhan677/bigdata/CIS-BP/Homo_sapiens.dna_encoded.meme
