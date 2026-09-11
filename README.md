@@ -2,6 +2,11 @@
 
 This repository contains metadata, example preprocessing outputs, processed inputs, and downstream analysis scripts for reproducing the analyses in the paper.
 
+**Start here:** [Commands for readers and reviewers](docs/REVIEWER_RUN_GUIDE.md)
+provides installation commands, an executable small example, all four plotting
+commands, expected numerical results, and the conditional raw-data-to-model
+runbook. Each route states its prerequisites and verification status.
+
 The repository is organized as a reproducibility workflow rather than a standalone software package. Standard preprocessing tools such as IRFinder and Cufflinks are documented, and example outputs are provided so downstream scripts can be tested without re-running all raw-data processing steps.
 
 ## Workflow Overview
@@ -407,7 +412,8 @@ python scripts/plot_tf_rbp_all_prediction_only.py
 Final plot outputs:
 
 ```text
-outputs/direction_specific_original_counts/tf_rbp_all_prediction_only.png
+outputs/direction_specific_original_counts/Figure7.png
+outputs/direction_specific_original_counts/Figure7.svg
 outputs/direction_specific_original_counts/tf_rbp_all_prediction_only_event_counts.tsv
 outputs/direction_specific_original_counts/tf_rbp_all_prediction_only_stats.tsv
 ```
@@ -432,9 +438,10 @@ The following information should still be completed before release:
 - Resolve the remaining provenance notes in `metadata/encode_data_sources.tsv`,
   including the inferred GM23248 CpG minus accession.
 - Add reference-download checksums and the exact IRFinder reference-build procedure.
-- Export the software environments used by the successful HPCC runs.
-- Recover and compare the frozen HPCC training and interpretation scripts with
-  the numbered repository scripts, and publish the matching run/checkpoint metadata.
+- Validate installation of a clean model environment against the recovered
+  [HPCC package inventory](provenance/hpcc_20260911/runtime/packages.txt).
+- Compare full numerical behavior of the recovered HPCC scripts with the
+  numbered repository scripts, and publish the rebuilt checkpoint itself.
 - Complete the new-output-to-downstream-validation mapping described in
   [the full workflow guide](docs/FULL_WORKFLOW.md).
 
