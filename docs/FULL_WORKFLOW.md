@@ -5,6 +5,10 @@ It distinguishes the original repository implementation from the
 August–September 2026 HPCC rebuild. Matching step names do not establish that
 the two versions are identical.
 
+The current paper baseline is defined in [README](../README.md#reproduction-baseline):
+released checkpoint, shared current workflow/files/environment, and the 95-row
+classification table. September run details below are supplementary provenance.
+
 ## Inputs and preparation
 
 The eight cell lines are K562, GM12878, H1, IMR-90, HepG2, HeLa-S3, GM23248,
@@ -46,10 +50,10 @@ before submission; those scripts retain author-specific paths.
 | 6. Extract sequence and signals | `scripts/03_build_feature_npz.py` | `outputs/raw_features/<cell>/*.npz` | Repository script called by rebuild; ambiguous-base alignment needs impact assessment |
 | 7. Sample negatives and assemble model inputs | `scripts/04_create_training_dataset.py` | `outputs/model_inputs/group_<cell>_model_input_seed1.npz` | Repository script called by rebuild |
 | 8. Validate model inputs | `hpcc_full_rebuild/03_validate.sbatch` | `outputs/validation_summary.json` | Structural validation included |
-| 9. Train and evaluate | Repository: `scripts/05_train_intronsformer.py`; rebuild: frozen `exp3b_2conv_rebuild.py` | Checkpoint and validation/test metrics | Actual HPCC training copy, environment and split records still need recovery/comparison |
-| 10. Compute integrated gradients | Repository: `scripts/06_integrated_gradients.py`; rebuild switched to `ig_full_all.py` | Sequence/score CSVs and selection/completion records | Actual HPCC copy and final wrapper still need recovery/comparison |
-| 11. Extract motifs | Repository: `scripts/07_extract_ig_motifs.py`; rebuild: `motif_extract.py` | Positive and negative motif CSVs | Actual HPCC copy still needs recovery/comparison |
-| 12. Convert motifs and match databases | Repository: `scripts/08_motifs_to_meme.py` and README Tomtom commands; rebuild: `motif_to_meme.py`, `tomtom_to_tf.py` | Positive/negative × TF/RBP matches | Final wrapper and four result sets still need archiving |
+| 9. Train and evaluate | Repository: `scripts/05_train_intronsformer.py`; rebuild: frozen `exp3b_2conv_rebuild.py` | Checkpoint and validation/test metrics | HPCC code and package inventory recovered; evaluation/split records require verification |
+| 10. Compute integrated gradients | Repository: `scripts/06_integrated_gradients.py`; rebuild switched to `ig_full_all.py` | Sequence/score CSVs and selection/completion records | HPCC code and final wrapper recovered |
+| 11. Extract motifs | Repository: `scripts/07_extract_ig_motifs.py`; rebuild: `motif_extract.py` | Positive and negative motif CSVs | HPCC code recovered |
+| 12. Convert motifs and match databases | Repository: `scripts/08_motifs_to_meme.py` and README Tomtom commands; rebuild: `motif_to_meme.py`, `tomtom_to_tf.py` | Positive/negative × TF/RBP matches | Final wrapper recovered; completed September result sets not archived |
 | 13. Build candidate lists | Existing `metadata/knockdown/Pos_TF.tsv`, `Neg_TF.tsv`, `Pos_RBP.tsv`, `Neg_RBP.tsv` | Candidate classes and selected assays | Mapping from new Tomtom results to these lists must be documented; existing lists are not automatically new-run results |
 | 14. Binding occupancy validation | `scripts/run_binding_overlap_hpcc.sh`, `09_binding_overlap_analysis.py`, `10_plot_binding_occupancy.py`; selected peaks TSV | Occupancy summary and plots | Existing workflow included; event paths still target `Project1` |
 | 15. Knockdown processing | `scripts/prepare_encode_knockdown.py`; `outputs/knockdown/` metadata and shell scripts | IRFinder and iDiffIR results | Existing workflow included; exact environment/reference setup still required |
@@ -101,8 +105,8 @@ The interpretation route switched to frozen local scripts under:
 ```
 
 The recorded route uses 50 IG steps, motif minimum length 5 and minimum count 3.
-The final motif wrapper corrected `--sequence` to `--seq`. Recover that wrapper
-along with its frozen Python files. Verify selection and CSV header behavior
+The recovered final motif wrapper corrected `--sequence` to `--seq`. Its
+frozen Python files are archived in the HPCC snapshot. Verify selection and CSV header behavior
 against the outputs; the conversation's aggregate IG counts were inconsistent
 and are not a substitute for a sample-level audit.
 
@@ -151,14 +155,15 @@ At 08:13 UTC, the corrected Tomtom job was still running. The latest historical
 plotting code and its required tables are covered separately in
 [`PLOT_CODE_SYNC.md`](PLOT_CODE_SYNC.md), without assigning manuscript figure numbers.
 
-## Remaining files to archive from the successful run
+## Additional records for the September rebuild (optional)
 
 - Actual reference configuration and a tested clean environment installation.
 - Model-input validation report, file hashes and per-cell counts.
 - Ordered input list, training split, evaluation outputs and checkpoint hash.
 - IG selection/done metadata and reconciled sequence/score counts.
 - Four completed Tomtom outputs and candidate derivation (database hashes recovered).
-- The historical four candidate-list versions used by the knockdown classifier.
+- Reconcile candidate reclassification differences separately; the paper
+  plotting baseline remains the included 95-row table.
 - A paper figure/table inventory, if requested separately; plotting commands and inputs are now documented.
 
 This guide describes available code and recorded behavior. It is not a claim

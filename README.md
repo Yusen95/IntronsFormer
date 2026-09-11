@@ -21,6 +21,29 @@ runbook. Each route states its prerequisites and verification status.
 
 The repository is organized as a reproducibility workflow rather than a standalone software package. Standard preprocessing tools such as IRFinder and Cufflinks are documented, and example outputs are provided so downstream scripts can be tested without re-running all raw-data processing steps.
 
+## Reproduction baseline
+
+Use the paper checkpoint from `model-v1.0.0`, downloaded to
+`models/best_2conv_auc.pt`. Its SHA256 is
+`87262fadd1f4f9f4fd3b8f51e63904b68cc757a16061ab26d0e1bfe1e9cf9748`.
+The author confirms that the current processing workflow, candidate-selection
+rules, input/reference files and environment apply to this version. Use the
+current public scripts and setup instructions; a separate legacy setup is not
+required. Clean installation still needs independent validation.
+
+The canonical event-count classification is the **95-row** table at
+`outputs/event_count_comparison/idiffir_event_counts_classified.tsv`.
+`python run_pipeline.py plot --rebuild-tables` rebuilds event summaries from
+this table and runs all four plotting workflows. It does not reclassify
+candidates. The separate 87-row reclassification is a diagnostic result and
+does not replace this input; differences remain recorded in
+`provenance/classification_version_mismatch.tsv`.
+
+Training is optional when using the released checkpoint. Exact reproduction of
+published model metrics also requires the corresponding evaluation samples and
+split; shared processing rules alone do not guarantee identical retraining.
+September rebuild snapshots are supplementary provenance, not the paper model.
+
 ## Workflow Overview
 
 Latest cross-project plotting scripts, their required input tables and local
@@ -28,7 +51,7 @@ rerun commands are documented in [the plotting synchronization guide](docs/PLOT_
 The [actual September HPCC code snapshot](provenance/hpcc_20260911/README.md)
 includes source hashes, runtime versions and rebuilt checkpoint identity.
 
-For the complete input-to-results map, including the August–September 2026
+For the complete input-to-results map, including the August鈥揝eptember 2026
 rebuild and remaining release gaps, see [the full workflow guide](docs/FULL_WORKFLOW.md).
 The raw FASTQ-to-model-input Slurm scripts and input manifests are in
 [`hpcc_full_rebuild/`](hpcc_full_rebuild/README.md). These scripts retain the
@@ -452,8 +475,8 @@ The following information should still be completed before release:
 - Add reference-download checksums and the exact IRFinder reference-build procedure.
 - Validate installation of a clean model environment against the recovered
   [HPCC package inventory](provenance/hpcc_20260911/runtime/packages.txt).
-- Compare full numerical behavior of the recovered HPCC scripts with the
-  numbered repository scripts, and publish the rebuilt checkpoint itself.
+- Verify the shared model environment and evaluation inputs for the released
+  paper checkpoint; publishing the September checkpoint is optional.
 - Complete the new-output-to-downstream-validation mapping described in
   [the full workflow guide](docs/FULL_WORKFLOW.md).
 

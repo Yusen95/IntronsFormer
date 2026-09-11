@@ -4,6 +4,9 @@ For fewer manual steps, use the [single-command pipelines](SIMPLE_PIPELINES.md):
 `run_pipeline.py preprocess`, `train`, `interpret` and `plot`. The detailed
 commands below remain available for examining individual stages.
 
+The [reproduction baseline](../README.md#reproduction-baseline) uses the paper
+checkpoint, shared current setup and canonical 95-row classification.
+
 This guide provides executable commands, their prerequisites and expected
 outputs. Start with **A** to check the included data and re-create the plots.
 Use **B–D** for a new model run after supplying the external data and software.
@@ -180,7 +183,7 @@ if the marker is absent; scheduler completion alone does not certify biological
 or reference equivalence. No complete clean-machine raw-data run has been
 verified for this release.
 
-## C. Train a model from the eight NPZ files (Linux/Bash)
+## C. Optional: train a model from the eight NPZ files (Linux/Bash)
 
 Leave the plotting environment and prepare the model environment:
 
@@ -221,11 +224,29 @@ The frozen actual HPCC source is preserved in [provenance](../provenance/hpcc_20
 
 ## D. Run IG, motif extraction and four Tomtom searches
 
-Continue in the same Bash session/model environment with `datasets` from C.
-Use the checkpoint just trained, and a fresh IG output directory:
+### Download the paper checkpoint
+
+Download the paper checkpoint; training is optional:
 
 ```bash
-python scripts/06_integrated_gradients.py --datasets "${datasets[@]}" --checkpoint outputs/run_model/best_2conv_auc.pt --output-dir outputs/run_ig --steps 50 --internal-batch-size 10 --infer-batch-size 32 --num-workers 4 --seed 42
+mkdir -p models
+curl --fail -L -o models/best_2conv_auc.pt https://github.com/Yusen95/IntronsFormer/releases/download/model-v1.0.0/best_2conv_auc.pt
+sha256sum models/best_2conv_auc.pt
+```
+
+Expected SHA256:
+`87262fadd1f4f9f4fd3b8f51e63904b68cc757a16061ab26d0e1bfe1e9cf9748`.
+Use that path as `--checkpoint` in D and a **different IG output directory**.
+This is not the September rebuilt model, whose observed hash starts `98c79031`.
+The release checkpoint alone does not provide the eight matching NPZ datasets.
+
+Prepare the model environment and `datasets` array from C; skip its training
+command when using the released checkpoint. Continue in that Bash session.
+Use the released paper checkpoint and a fresh IG output directory. To analyze
+a new training run, explicitly substitute its checkpoint path:
+
+```bash
+python scripts/06_integrated_gradients.py --datasets "${datasets[@]}" --checkpoint models/best_2conv_auc.pt --output-dir outputs/run_ig --steps 50 --internal-batch-size 10 --infer-batch-size 32 --num-workers 4 --seed 42
 mkdir -p outputs/run_motifs
 for sign in pos neg; do
   python scripts/07_extract_ig_motifs.py --direction "$sign" --seq "outputs/run_ig/ig_all_${sign}_sequence.csv" --score "outputs/run_ig/ig_all_${sign}_score.csv" --out "outputs/run_motifs/${sign}.csv" --min_len 5 --count 3
@@ -261,27 +282,12 @@ Expected: four Tomtom result directories, each containing `tomtom.tsv` and
 `matched_factors.csv`. Mapping to factor names does not automatically generate
 the historical peak-selection and perturbation-classification inputs.
 
-### Optional: use the older released checkpoint
-
-To inspect the original release instead of training, download it explicitly:
-
-```bash
-mkdir -p models
-curl --fail -L -o models/best_2conv_auc.pt https://github.com/Yusen95/IntronsFormer/releases/download/model-v1.0.0/best_2conv_auc.pt
-sha256sum models/best_2conv_auc.pt
-```
-
-Expected SHA256:
-`87262fadd1f4f9f4fd3b8f51e63904b68cc757a16061ab26d0e1bfe1e9cf9748`.
-Use that path as `--checkpoint` in D and a **different IG output directory**.
-This is not the September rebuilt model, whose observed hash starts `98c79031`.
-The release checkpoint alone does not provide the eight matching NPZ datasets.
-
 ## E. Downstream binding and knockdown validation
 
 These commands require the original event/reference layout and external tools;
-they do not form an automatic continuation of D. The selected candidate table
-is historical. The exact new-Tomtom-to-candidate-table mapping remains open.
+they do not form an automatic continuation of D. The author confirms the same candidate-selection rules apply. The plotting
+baseline is the included 95-row classification; raw validation commands still
+require explicit file hand-offs.
 
 ### Binding occupancy
 
@@ -316,8 +322,9 @@ BASE_DIR="$BASE_DIR" IRFINDER_REF="$BASE_DIR/refDir" IDIFFIR_DIR="$BASE_DIR/Proj
 Result directories contain `lists/allDIRs.txt`, `upDIRs.txt` and `downDIRs.txt`.
 For count-summary commands, follow the
 [knockdown README section](../README.md#knockdown-perturbation-validation).
-Those newly classified results must not silently replace A5's archived table:
-the original four candidate-list versions are still unresolved.
+A5 uses the canonical 95-row classification. Reclassification with the current
+lists produces 87 rows; keep this diagnostic output separate until the recorded
+membership/category differences are reconciled.
 
 ## What to report if a command fails
 

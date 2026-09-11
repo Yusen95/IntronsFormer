@@ -76,23 +76,24 @@ The September 10 correction `YBX1_result -> K562` is propagated to the raw count
 snapshot and classified table so these commands retain it. The HepG2 experiment
 is separate; event counts are unchanged (K562 412; HepG2 178).
 
-**An earlier step is still unresolved:** the restored
-`classify_idiffir_counts_and_plot.py` produces 87 classified rows with the
-current `metadata/knockdown/Pos_*` and `Neg_*` files, whereas the historical table
-contains 95. This is a version mismatch, not a missing plotting dependency.
-The affected runs are listed in
+**Canonical classification:** use the included 95-row classified table for
+paper downstream statistics and plots. The author confirms the candidate
+selection rules and processing setup are shared with the current workflow.
+Both summary commands above and `run_pipeline.py plot --rebuild-tables` use
+this table; candidate reclassification is not required for this route.
+
+Reclassification with the current `Pos_*`/`Neg_*` files produces 87 rows, with
+changed memberships and categories. The cause has not been established; this
+alone does not prove a missing historical list. Differences are retained in
 [`classification_version_mismatch.tsv`](../provenance/classification_version_mismatch.tsv).
-It now requires `--candidate-dir` and defaults to a separate output directory:
+For a separate investigation, use:
 
 ```bash
-python scripts/classify_idiffir_counts_and_plot.py --candidate-dir /path/to/verified_historical_lists --out-dir outputs/classification_rebuild
+python scripts/classify_idiffir_counts_and_plot.py --candidate-dir metadata/knockdown --out-dir outputs/classification_rebuild
 ```
 
-Do not replace the archived classification until the four original lists have
-been identified and compared. Exact-name searches in the local source project
-and a bounded HPCC search did not locate them. They may exist under different
-names or in deeper directories. No candidate labels were invented to force
-agreement with the historical table.
+Do not substitute this diagnostic output for the canonical table or change
+labels merely to reach 95 rows.
 
 ## Verification performed
 

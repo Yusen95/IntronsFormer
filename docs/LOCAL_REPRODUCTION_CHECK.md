@@ -1,5 +1,11 @@
 # Per-script local reproduction check
 
+**Current baseline:** see [README](../README.md#reproduction-baseline). The paper
+uses the released checkpoint and canonical 95-row classification with the shared
+current workflow and environment. The following is a historical audit, not a
+current missing-file inventory. Runtime options now support CPU and supported
+CUDA precision; pipeline tests cover these options.
+
 **Later update, same date:** [PLOT_CODE_SYNC.md](PLOT_CODE_SYNC.md) covers the
 additional plotting/preparation scripts, restored input tables and successful
 replotting checks. [The HPCC snapshot](../provenance/hpcc_20260911/README.md)

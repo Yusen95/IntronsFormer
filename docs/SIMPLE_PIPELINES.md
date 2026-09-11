@@ -79,7 +79,8 @@ not replaced by this driver.
 
 ## 3. Train with adjustable resource settings
 
-Switch to the model environment first. Normal settings:
+Training is optional when using the released paper checkpoint. Switch to the
+model environment first. For a new training run, normal settings:
 
 ```bash
 python run_pipeline.py train --dataset-list outputs/preprocessed/datasets.txt --output-dir outputs/model_run --batch-size 16 --accumulation-steps 4 --epochs 15
@@ -128,8 +129,12 @@ fails with guidance rather than silently selecting another requested mode.
 
 ## 4. IG → motif extraction → MEME conversion
 
+Download the [paper checkpoint](RUN_GUIDE.md#download-the-paper-checkpoint) to
+`models/best_2conv_auc.pt` first. Substitute a new checkpoint only when analyzing
+a new training run.
+
 ```bash
-python run_pipeline.py interpret --dataset-list outputs/preprocessed/datasets.txt --checkpoint outputs/model_run/best_2conv_auc.pt --output-dir outputs/interpret_run --infer-batch-size 1 --internal-batch-size 1 --num-workers 0
+python run_pipeline.py interpret --dataset-list outputs/preprocessed/datasets.txt --checkpoint models/best_2conv_auc.pt --output-dir outputs/interpret_run --infer-batch-size 1 --internal-batch-size 1 --num-workers 0
 ```
 
 This executes IG once and then processes both positive and negative outputs.
@@ -143,13 +148,14 @@ To include all four Tomtom searches and factor-name mapping, supply both
 databases in the same command (Tomtom must be installed):
 
 ```bash
-python run_pipeline.py interpret --dataset-list outputs/preprocessed/datasets.txt --checkpoint outputs/model_run/best_2conv_auc.pt --output-dir outputs/interpret_with_tomtom --infer-batch-size 1 --internal-batch-size 1 --tf-db /path/to/Homo_sapiens_2.0.meme --rbp-db metadata/knockdown/Homo_sapiens.meme
+python run_pipeline.py interpret --dataset-list outputs/preprocessed/datasets.txt --checkpoint models/best_2conv_auc.pt --output-dir outputs/interpret_with_tomtom --infer-batch-size 1 --internal-batch-size 1 --tf-db /path/to/Homo_sapiens_2.0.meme --rbp-db metadata/knockdown/Homo_sapiens.meme
 ```
 
 Use `--tomtom /path/to/tomtom` if it is not on PATH. The additional `tomtom/`
 directory contains `tf_pos`, `tf_neg`, `rbp_pos` and `rbp_neg` results. Omitting
 both database options intentionally ends at MEME conversion and prints that
-Tomtom was omitted. The downstream candidate-table version gap remains open.
+Tomtom was omitted. The same candidate-selection rules apply. Reclassification remains separate
+from the canonical 95-row plotting input.
 
 ## 5. Re-create all four plot workflows
 
@@ -169,7 +175,7 @@ python run_pipeline.py plot --rebuild-tables
 Plots retain the existing `outputs/` locations listed in the
 [plot guide](PLOT_CODE_SYNC.md). This route regenerates those files in the
 checkout; use a separate checkout to preserve existing outputs. It does not use an unfinished model
-run or recompute the unresolved historical candidate classification.
+run or reclassify candidates. Event summaries use the canonical 95-row table.
 
 ## Inspect commands, logs and validation status
 
@@ -200,3 +206,19 @@ both motif signs and all four Tomtom dispatches. Hardware-selection logic uses
 test doubles. Full BigWig preprocessing, model training, IG and Tomtom execution
 were not rerun locally; the driver does not close the existing environment/data
 gaps recorded in the run guide.
+
+### Fresh plotting environment check (2026-09-11)
+
+A new Windows/Python 3.12 virtual environment was created with `python -m venv`,
+and `pip install -r requirements-plotting.txt` succeeded. `pip check` reported
+no broken requirements. All 11 tests passed, including the real K562 example.
+`python run_pipeline.py plot --rebuild-tables` completed all eight stages.
+The canonical classification remained at 95 rows; both regenerated event-count
+tables matched the committed values exactly. The 207-row occupancy table also
+matched after excluding the expected `Source_File` path changes. All four plot
+workflows completed. These counts refer to different filtered tables, so their
+row counts need not equal the canonical classification count.
+
+This validates an isolated plotting installation on this host, not a clean OS
+or the full model environment. Conda was unavailable on this host; model/raw
+processing environment installation, training, IG and Tomtom were not executed.
