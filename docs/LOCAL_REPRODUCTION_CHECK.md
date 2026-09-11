@@ -1,5 +1,14 @@
 # Per-script local reproduction check
 
+**Code maintenance update (2026-09-11):** standalone preprocessing/motif
+commands create output directories; motif CSV reading supports long fields and
+single-base rows. IG requires matching checkpoint keys. Training saves a first
+best-AUC checkpoint even when its AUC is zero. Tomtom mapping excludes invalid
+q-values. Download jobs publish completed files only; FASTQs are gzip-checked,
+and peak downloads select the requested accession. Each knockdown run isolates
+its environment in a subshell. Analysis commands, model architecture and the
+canonical 95-row classification are preserved.
+
 **Current baseline:** see [README](../README.md#reproduction-baseline). The paper
 uses the released checkpoint and canonical 95-row classification with the shared
 current workflow and environment. The following is a historical audit, not a
@@ -55,13 +64,13 @@ not validation of all scientific edge cases or equivalence to HPCC results.
 
 | Script | Local result | Remaining requirement or issue |
 | --- | --- | --- |
-| `01_filter_ir_events.py` | Executed with the published K562 IRFinder/FPKM example | Output parent must already exist. Uses fixed IRFinder/Cufflinks column positions and truncates IntronDepth to an integer. |
+| `01_filter_ir_events.py` | Executed with the published K562 IRFinder/FPKM example | Output parents are created. Uses fixed IRFinder/Cufflinks column positions and truncates IntronDepth to an integer. |
 | `02_filter_bed_windows.py` | Executed on both K562 BED outputs | pandas required. Flanks can produce negative BED starts; later feature extraction clips them, while stored BED metadata retains the original coordinates. |
 | `03_build_feature_npz.py` | Source reviewed; full execution not tested because pyBigWig is absent | Requires reference FASTA and four real BigWigs. Removing non-ACGT bases without matching signal masking can misalign features. Assembly/coordinate identity needs checking. |
 | `04_create_training_dataset.py` | Executed with synthetic 4-channel arrays; 3 positives + 12 sampled negatives and 15 metadata rows verified | Real feature inputs required. Use `--seed 1` for the documented deterministic sampling. |
-| `05_train_intronsformer.py` | Source reviewed | Loads all datasets into RAM; uses a large model and BF16 on every CUDA device. Small splits may contain one class and fail AUC. Gradient accumulation and threshold-selection issues are listed below. |
-| `06_integrated_gradients.py` | Source reviewed | Needs matching checkpoint, full NPZ inputs and substantial memory. Resume state is not bound to input/checkpoint hashes; mismatched keys only warn. |
-| `07_extract_ig_motifs.py` | Executed on synthetic positive and negative sequence/score files | Output directory must exist. Loads all CSVs into RAM. Input is headerless; exact row/base correspondence matters. |
+| `05_train_intronsformer.py` | Source reviewed | Loads all datasets into RAM; uses a large model; automatic BF16 requires a supported CUDA device. Small splits may contain one class and fail AUC. Gradient accumulation and threshold-selection issues are listed below. |
+| `06_integrated_gradients.py` | Source reviewed | Needs matching checkpoint, full NPZ inputs and substantial memory. Resume state is not bound to input/checkpoint hashes; mismatched checkpoint keys stop execution. |
+| `07_extract_ig_motifs.py` | Executed on synthetic positive and negative sequence/score files | Output parents are created. Loads all CSVs into RAM. Input is headerless; exact row/base correspondence matters. |
 | `08_motifs_to_meme.py` | Executed for both signs and a 200,000-character CSV field after Windows fix | Motif IDs are renumbered; retain an explicit mapping if linking Tomtom query IDs back to CSV IDs. |
 | `09_binding_overlap_analysis.py` | Executed on synthetic GTF, events and peak data | Still requires all three hardcoded cell-line event layouts, even for a one-cell selected table. Treats event coordinates as 1-based inclusive; do not blindly substitute conventional BED or flanked feature windows. |
 | `10_plot_binding_occupancy.py` | Executed on the synthetic overlap output; PNG/PDF generated | Requires the summary schema from `09`; plots K562/HepG2. Does not reconstruct missing occupancy results. |
@@ -85,10 +94,10 @@ All passed syntax checks. None was executed against real FASTQ, BAM or Slurm.
 | `hpcc_full_rebuild/02_combine_irfinder_fpkm.sbatch` | Requires preceding completion records/BAMs, samtools, IRFinder, Cufflinks and hardcoded paths. Requests 128 GB RAM. |
 | `hpcc_full_rebuild/02_model_inputs.sbatch` | Requires Slurm array index and the preceding IRFinder/FPKM outputs; invokes `01–04`. First-match IRFinder table selection is still ambiguous. Requests 96 GB RAM. |
 | `hpcc_full_rebuild/03_validate.sbatch` | Embedded Python could run locally after path adaptation, but wrapper hardcodes Python/run paths. Shape/count/finiteness checks do not validate binary labels, minimum sequence lengths or coordinate alignment. |
-| `scripts/download_encode_peaks_from_selected_tsv.sh` | Bash/wget/gzip and a selected TSV required; standalone default TSV path differs from the repository layout. Skips a target if any BED exists, not necessarily the selected accession; interrupted output may remain. |
+| `scripts/download_encode_peaks_from_selected_tsv.sh` | Bash/wget/gzip and a selected TSV required. Defaults to repository metadata, checks the selected accession and publishes decompressed output after success. |
 | `scripts/run_binding_overlap_hpcc.sh` | No Slurm command; can run on a configured Linux workstation. Requires expected event/GTF layout, external downloads and Python packages. Enables fallback to non-selected peak files, weakening strict input reproducibility. |
-| `outputs/knockdown/download_encode_knockdown_fastq_HPCC.sh` | Bash/wget required; no Slurm. Published paths match the runner. Writes directly to final files and skips nonempty files, so interrupted downloads need explicit integrity checks before reuse. |
-| `outputs/knockdown/run_all_knockdown_irfinder_idiffir.sh` | No Slurm, but requires IRFinder, `idiffir_py2` Conda environment, iDiffIR/convertBam and references. Relative BAM source paths assume the original directory nesting. Environment activation persists into subsequent IRFinder blocks. |
+| `outputs/knockdown/download_encode_knockdown_fastq_HPCC.sh` | Bash/wget required; no Slurm. Published paths match the runner. Downloads to temporary files and checks gzip integrity before publishing or reusing a FASTQ. |
+| `outputs/knockdown/run_all_knockdown_irfinder_idiffir.sh` | No Slurm, but requires IRFinder, `idiffir_py2` Conda environment, iDiffIR/convertBam and references. Relative BAM source paths assume the original directory nesting. Run-specific environment activation is isolated in a subshell. |
 
 The untracked `scripts/update_figure7_ybx1_labels.py` is a manuscript-edit helper,
 not a public reproduction step. It depends on an unpublished source PDF plus
@@ -102,15 +111,14 @@ These require comparison with the executed HPCC version before changing paper re
    rather than applying a shared position mask. Example: `ACNGT` becomes four
    DNA values while signals still represent the first four original positions.
 2. **Training updates:** `05` steps the optimizer only every fourth batch;
-   remaining batches at the end of an epoch are discarded. With fewer than four
-   training batches there is no optimizer update. The learning-rate schedule
+   remaining batches at the end of an epoch are discarded. Accumulation is now
+   configurable and too few batches cause an explicit error. The learning-rate schedule
    counts every batch although it advances only on optimizer updates.
 3. **Evaluation meaning:** `05` selects the best F1 threshold separately inside
    each evaluation call, including test evaluation. Reported test F1 is not the
    result of a validation-fixed threshold. Splits/predictions are not archived.
 4. **IG resume/model identity:** `06` reuses selection/done files without checking
-   input or checkpoint identity; `strict=False` can leave unmatched parameters
-   initialized while continuing. Use a fresh output directory for a changed run.
+   input or checkpoint identity. Checkpoint loading now requires matching keys. Use a fresh output directory for a changed run.
 5. **Motif/validation hand-off:** `08` renumbers motifs; classification output
    schemas and positive/negative overlap rules differ between scripts. A
    documented conversion is needed before new-run validation can reproduce the

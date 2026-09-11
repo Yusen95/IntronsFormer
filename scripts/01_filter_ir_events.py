@@ -1,4 +1,5 @@
 import sys
+from pathlib import Path
 
 
 # 0-based column indices.
@@ -25,6 +26,8 @@ def main(fpkm_path, irfinder_path, output_ir_bed, output_nonir_bed):
             except ValueError:
                 continue
 
+    for output in (output_ir_bed, output_nonir_bed):
+        Path(output).parent.mkdir(parents=True, exist_ok=True)
     with open(irfinder_path, "r") as infile, \
             open(output_ir_bed, "w") as ir_out, \
             open(output_nonir_bed, "w") as nonir_out:

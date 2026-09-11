@@ -2,12 +2,15 @@
 
 import argparse
 import csv
+import sys
+from pathlib import Path
 from collections import defaultdict
 
 import numpy as np
 
 
 BASE_MAP = {0: "A", 1: "C", 2: "G", 3: "T"}
+csv.field_size_limit(min(sys.maxsize, 2**31 - 1))
 
 
 def parse_float_row(row):
@@ -22,7 +25,7 @@ def parse_base_row(row):
 
 
 def find_high_regions(scores, direction, min_len):
-    scores = np.squeeze(scores)
+    scores = np.asarray(scores).reshape(-1)
 
     if direction == "pos":
         filtered = scores[scores > 0]
@@ -74,10 +77,10 @@ def extract_motifs(all_scores, sequences, direction, min_len):
         sequence = sequences[seq_index]
         intron_length = len(sequence)
 
-        if len(np.squeeze(seq_scores)) != intron_length:
+        if len(seq_scores) != intron_length:
             raise ValueError(
                 f"Length mismatch at row {seq_index}: "
-                f"scores={len(np.squeeze(seq_scores))}, bases={intron_length}"
+                f"scores={len(seq_scores)}, bases={intron_length}"
             )
 
         for region in regions:
@@ -118,6 +121,7 @@ def perform_motif_analysis(score_file, seq_file, output_file, direction, min_mot
 
     global_dict = extract_motifs(all_scores, sequences, direction, min_motif_len)
 
+    Path(output_file).parent.mkdir(parents=True, exist_ok=True)
     with open(output_file, "w", newline="") as output_handle:
         writer = csv.writer(output_handle)
         writer.writerow(["Motif_ID", "Motif_Seq", "Occurrences", "Mean_Region_IG", "Positions"])

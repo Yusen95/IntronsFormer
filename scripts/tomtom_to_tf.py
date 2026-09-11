@@ -14,6 +14,7 @@ TF 名可能是:
 
 import argparse
 import csv
+import math
 import re
 from pathlib import Path
 
@@ -57,7 +58,7 @@ def parse_tomtom(tomtom_path, tf_map, qthresh):
                 q = float(qval)
             except (ValueError, TypeError):
                 continue
-            if q > qthresh:
+            if not math.isfinite(q) or q < 0 or q > qthresh:
                 continue
             tf = tf_map.get(target)
             if tf is None:

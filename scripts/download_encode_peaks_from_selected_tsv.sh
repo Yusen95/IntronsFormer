@@ -2,7 +2,9 @@
 set -euo pipefail
 
 BASE_DIR="${BASE_DIR:-$PWD}"
-SELECTED_TSV="${SELECTED_TSV:-encode_selected_peaks_pos_both_neg_tsv.tsv}"
+REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+SELECTED_TSV="${SELECTED_TSV:-$REPO_DIR/metadata/encode_selected_peaks_pos_both_neg_tsv.tsv}"
+SELECTED_TSV="$(cd "$(dirname "$SELECTED_TSV")" && pwd)/$(basename "$SELECTED_TSV")"
 
 cd "$BASE_DIR"
 
@@ -29,17 +31,17 @@ do
   out_dir="${assay_dir}_${Cell_Line}/${ENCODE_Target}"
   mkdir -p "$out_dir"
 
-  if ls "$out_dir"/*.narrowPeak.bed >/dev/null 2>&1; then
-    echo "[SKIP] Existing BED in $out_dir"
-    continue
-  fi
-
   rep_label="${Biological_Replicates//,/-}"
   out_bed="${out_dir}/${ENCODE_Target}_${Cell_Line}_${Experiment}_${Selected_File}_${Assembly}_rep${rep_label}.narrowPeak.bed"
+  if [ -s "$out_bed" ]; then
+    echo "[SKIP] Selected BED exists: $out_bed"
+    continue
+  fi
   tmp_gz="${out_bed}.gz"
 
   echo "[GET] ${Class} ${Category} ${ENCODE_Target} ${Cell_Line} ${Experiment} ${Selected_File}"
   wget -c -O "$tmp_gz" "$Download_URL"
-  gzip -cd "$tmp_gz" > "$out_bed"
+  gzip -cd "$tmp_gz" > "${out_bed}.part"
+  mv "${out_bed}.part" "$out_bed"
   rm -f "$tmp_gz"
 done

@@ -382,11 +382,12 @@ def write_download_script(path: Path, fastq_rows: list[dict]) -> None:
             f'mkdir -p "{out_dir}"',
             f'out="{out_file}"',
             'tmp="${out}.part"',
-            'if [ -s "$out" ]; then',
+            'if [ -s "$out" ] && gzip -t "$out" 2>/dev/null; then',
             '  echo "[SKIP] already exists: $out"',
             "else",
             f'  echo "[GET] {row["Run_ID"]} {row["Condition"]} rep{row["Replicate_Index"]} read{row["Read"]} {row["File_Accession"]}"',
             f'  wget -c -O "$tmp" {shlex.quote(row["Download_URL"])}',
+            '  gzip -t "$tmp"',
             '  mv "$tmp" "$out"',
             "fi",
             "",
@@ -432,6 +433,7 @@ def write_run_script(path: Path, selected: list[dict], fastq_rows: list[dict]) -
         selected_row = selected_by_run[key]
         reps = int(selected_row["Used_Replicate_Count"])
         lines.extend([
+            '(',
             f'echo "[INFO] IRFinder {run_id}"',
             'if [ -n "$IRFINDER_ENV" ]; then',
             '  source ~/.bashrc',
@@ -504,7 +506,7 @@ def write_run_script(path: Path, selected: list[dict], fastq_rows: list[dict]) -
             f'  touch {shlex.quote(result_done)}',
             "fi",
         ])
-        lines.append("")
+        lines.extend([")", ""])
 
     with path.open("w", encoding="utf-8", newline="\n") as handle:
         handle.write("\n".join(lines) + "\n")

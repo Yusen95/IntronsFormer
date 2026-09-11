@@ -1,4 +1,5 @@
 import sys
+from pathlib import Path
 
 import pandas as pd
 
@@ -25,6 +26,7 @@ def main(input_bed, output_bed):
     df["start"] = df["start"] - 100
     df["end"] = df["end"] + 100
 
+    Path(output_bed).parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(output_bed, sep="\t", header=False, index=False)
 
     print(f"New BED file saved to {output_bed}: {len(df)} rows")

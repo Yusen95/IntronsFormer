@@ -34,7 +34,7 @@ def parse_args():
     parser.add_argument("--infer-batch-size", type=positive_int, default=32)
     parser.add_argument("--num-workers", type=nonnegative_int, default=4)
     add_runtime_arguments(parser)
-    parser.add_argument("--save-every", type=int, default=50)
+    parser.add_argument("--save-every", type=positive_int, default=50)
     parser.add_argument("--seed", type=int, default=42)
     return parser.parse_args()
 
@@ -247,9 +247,7 @@ def build_model(k_mer, checkpoint, device):
     state_dict = torch.load(checkpoint, map_location=device)
     if isinstance(state_dict, dict) and "model_state_dict" in state_dict:
         state_dict = state_dict["model_state_dict"]
-    missing, unexpected = model.load_state_dict(state_dict, strict=False)
-    if missing or unexpected:
-        print("[WARN] key mismatch -> missing:", missing, "| unexpected:", unexpected)
+    model.load_state_dict(state_dict, strict=True)
 
     model.eval()
     return model

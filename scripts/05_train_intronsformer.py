@@ -391,7 +391,7 @@ def main():
     scaler = GradScaler(enabled=use_amp)
 
     best_val = float("inf")
-    best_auc = 0.0
+    best_auc = -float("inf")
     accumulation_steps = args.accumulation_steps
     best_loss_checkpoint = output_dir / "best_2conv_loss.pt"
     best_auc_checkpoint = output_dir / "best_2conv_auc.pt"
