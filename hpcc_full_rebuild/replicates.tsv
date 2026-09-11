@@ -1,0 +1,17 @@
+cell	replicate	layout	read1_files	read2_files
+K562	rep1	PE	/rhome/yzhan677/bigdata/fastq/K562/ENCFF000HFF.fastq	/rhome/yzhan677/bigdata/fastq/K562/ENCFF000HFG.fastq
+K562	rep2	PE	/rhome/yzhan677/bigdata/fastq/K562/ENCFF000HFH.fastq	/rhome/yzhan677/bigdata/fastq/K562/ENCFF000HFY.fastq
+GM12878	rep1	PE	/rhome/yzhan677/bigdata/fastq/GM12878/ENCFF001REK.fastq	/rhome/yzhan677/bigdata/fastq/GM12878/ENCFF001REJ.fastq
+GM12878	rep2	PE	/rhome/yzhan677/bigdata/fastq/GM12878/ENCFF001REI.fastq	/rhome/yzhan677/bigdata/fastq/GM12878/ENCFF001REH.fastq
+H1	rep1	PE	/rhome/yzhan677/bigdata/fastq/H1/ENCFF565ZQD.fastq	/rhome/yzhan677/bigdata/fastq/H1/ENCFF039JYG.fastq
+H1	rep2	PE	/rhome/yzhan677/bigdata/fastq/H1/ENCFF953ZDW.fastq	/rhome/yzhan677/bigdata/fastq/H1/ENCFF346WNU.fastq
+IMR-90	rep1	PE	/rhome/yzhan677/bigdata/fastq/IMR-90/ENCFF000GZX.fastq	/rhome/yzhan677/bigdata/fastq/IMR-90/ENCFF000HAF.fastq
+IMR-90	rep2	PE	/rhome/yzhan677/bigdata/fastq/IMR-90/ENCFF000GZY.fastq	/rhome/yzhan677/bigdata/fastq/IMR-90/ENCFF000HAE.fastq
+HepG2	rep1	PE	/rhome/yzhan677/bigdata/fastq/HepG2/ENCFF946VBP.fastq.gz	/rhome/yzhan677/bigdata/fastq/HepG2/ENCFF982FAM.fastq.gz
+HepG2	rep2	PE	/rhome/yzhan677/bigdata/fastq/HepG2/ENCFF787PPA.fastq.gz	/rhome/yzhan677/bigdata/fastq/HepG2/ENCFF564BSM.fastq.gz
+HeLa-S3	rep1	PE	/rhome/yzhan677/bigdata/fastq/HeLa-S3/ENCFF000FQK.fastq	/rhome/yzhan677/bigdata/fastq/HeLa-S3/ENCFF000FQX.fastq
+HeLa-S3	rep2	PE	/rhome/yzhan677/bigdata/fastq/HeLa-S3/ENCFF000FQW.fastq	/rhome/yzhan677/bigdata/fastq/HeLa-S3/ENCFF000FQV.fastq
+GM23248	rep1	SE	/rhome/yzhan677/bigdata/fastq/GM23248/ENCFF509HFH.fastq,/rhome/yzhan677/bigdata/fastq/GM23248/ENCFF627NPY.fastq	-
+GM23248	rep2	SE	/rhome/yzhan677/bigdata/fastq/GM23248/ENCFF065GSV.fastq,/rhome/yzhan677/bigdata/fastq/GM23248/ENCFF737TKD.fastq	-
+SK-N-SH	rep1	PE	/rhome/yzhan677/bigdata/fastq/SK-N-SH/ENCFF000INM.fastq	/rhome/yzhan677/bigdata/fastq/SK-N-SH/ENCFF000INT.fastq
+SK-N-SH	rep2	PE	/rhome/yzhan677/bigdata/fastq/SK-N-SH/ENCFF000INN.fastq	/rhome/yzhan677/bigdata/fastq/SK-N-SH/ENCFF000INV.fastq

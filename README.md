@@ -6,6 +6,12 @@ The repository is organized as a reproducibility workflow rather than a standalo
 
 ## Workflow Overview
 
+For the complete input-to-results map, including the August–September 2026
+rebuild and remaining release gaps, see [the full workflow guide](docs/FULL_WORKFLOW.md).
+The raw FASTQ-to-model-input Slurm scripts and input manifests are in
+[`hpcc_full_rebuild/`](hpcc_full_rebuild/README.md). These scripts retain the
+original HPCC paths and require the setup described there.
+
 1. Collect ENCODE RNA-seq datasets for selected human cell lines.
 2. Quantify intron retention with IRFinder.
 3. Quantify gene expression as FPKM with Cufflinks.
@@ -60,6 +66,7 @@ External command-line tools used outside the Python environment:
 
 ```text
 metadata/
+  encode_data_sources.tsv     # ENCODE IDs for H3K36me3, DHS, CpG, and RNA-seq inputs
   rnaseq_sources.tsv          # ENCODE RNA-seq sources used for IRFinder/Cufflinks
 
 example/
@@ -399,7 +406,12 @@ The final plot compares total iDiffIR event counts for predicted TFs/RBPs versus
 
 ## Current Entry Point
 
-Downstream analyses are intended to start from processed IRFinder and FPKM result tables. The complete raw FASTQ/BAM processing workflow is not included because IRFinder and Cufflinks are used as standard tools without custom algorithmic changes.
+Two entry points are available: the matched K562 processed example below, and
+the [HPCC raw-input rebuild](hpcc_full_rebuild/README.md). The latter includes
+replicate-level IRFinder, combined-BAM IRFinder/Cufflinks, feature construction,
+and model-input validation. It currently requires downloaded source files,
+an existing IRFinder reference, and configured HPCC tool environments; reference
+construction and environment restoration are not yet packaged as an automated setup.
 
 The repository includes matched K562 IRFinder and Cufflinks outputs under `example/`, allowing users to run the first downstream filtering step without repeating FASTQ/BAM preprocessing. The trained model used for integrated-gradient analysis is distributed as the `best_2conv_auc.pt` asset in the `model-v1.0.0` GitHub Release.
 
@@ -407,11 +419,14 @@ The repository includes matched K562 IRFinder and Cufflinks outputs under `examp
 
 The following information should still be completed before release:
 
-- ENCODE RNA-seq accessions for any additional cell lines
-- Exact Ensembl 111 GTF file name
-- Rules for merging or averaging replicates
-- ENCODE accessions or download URLs for H3K36me3, DNase/DHS, and strand-specific CpG bigWig inputs
-- Exact versions of samtools, MEME suite / TomTom, and iDiffIR
+- Resolve the remaining provenance notes in `metadata/encode_data_sources.tsv`,
+  including the inferred GM23248 CpG minus accession.
+- Add reference-download checksums and the exact IRFinder reference-build procedure.
+- Export the software environments used by the successful HPCC runs.
+- Recover and compare the frozen HPCC training and interpretation scripts with
+  the numbered repository scripts, and publish the matching run/checkpoint metadata.
+- Complete the new-output-to-downstream-validation mapping described in
+  [the full workflow guide](docs/FULL_WORKFLOW.md).
 
 ## License
 
