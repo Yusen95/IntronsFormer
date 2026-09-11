@@ -14,7 +14,7 @@ python run_pipeline.py train --dataset-list outputs/preprocessed/datasets.txt --
 
 See the guide for the full preprocessing manifest, CPU/GPU settings, gradient
 accumulation and IG/Tomtom options. The included BED example does not generate
-training data. [Commands for readers and reviewers](docs/REVIEWER_RUN_GUIDE.md)
+training data. [Running the workflow](docs/RUN_GUIDE.md)
 provides installation commands, an executable small example, all four plotting
 commands, expected numerical results, and the conditional raw-data-to-model
 runbook. Each route states its prerequisites and verification status.

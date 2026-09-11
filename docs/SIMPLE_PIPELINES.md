@@ -3,7 +3,7 @@
 `run_pipeline.py` connects the existing numbered scripts. It uses the active
 Python environment, stops when a stage fails, and prints each command as it
 runs. Install the environment described in the
-[reviewer guide](REVIEWER_RUN_GUIDE.md) first. Run commands from the repository
+[run guide](RUN_GUIDE.md) first. Run commands from the repository
 root; all command lines below work in Bash and PowerShell.
 
 ## 1. Included preprocessing example (CPU)
@@ -168,7 +168,7 @@ python run_pipeline.py plot --rebuild-tables
 
 Plots retain the existing `outputs/` locations listed in the
 [plot guide](PLOT_CODE_SYNC.md). This route regenerates those files in the
-checkout; use a separate review checkout. It does not use an unfinished model
+checkout; use a separate checkout to preserve existing outputs. It does not use an unfinished model
 run or recompute the unresolved historical candidate classification.
 
 ## Inspect commands, logs and validation status
@@ -199,4 +199,4 @@ of existing outputs, ordered dataset-list hand-off, resource-argument routing,
 both motif signs and all four Tomtom dispatches. Hardware-selection logic uses
 test doubles. Full BigWig preprocessing, model training, IG and Tomtom execution
 were not rerun locally; the driver does not close the existing environment/data
-gaps recorded in the reviewer guide.
+gaps recorded in the run guide.

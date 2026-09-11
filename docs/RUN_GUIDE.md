@@ -1,4 +1,4 @@
-# Commands for readers and reviewers
+# Running the workflow
 
 For fewer manual steps, use the [single-command pipelines](SIMPLE_PIPELINES.md):
 `run_pipeline.py preprocess`, `train`, `interpret` and `plot`. The detailed
@@ -21,11 +21,11 @@ manuscript numbering.
 
 ## A. Run the included example and re-create the plots
 
-### A1. Clone a separate review checkout
+### A1. Clone the repository
 
 ```bash
-git clone https://github.com/Yusen95/IntronsFormer.git IntronsFormer-review
-cd IntronsFormer-review
+git clone https://github.com/Yusen95/IntronsFormer.git
+cd IntronsFormer
 git rev-parse HEAD
 ```
 
@@ -62,11 +62,11 @@ normal package-management procedure. Different fonts may change pixels.
 These single-line commands work in Bash and PowerShell:
 
 ```bash
-python -c "from pathlib import Path; Path('outputs/reviewer_example').mkdir(parents=True, exist_ok=True)"
-python scripts/01_filter_ir_events.py example/cufflinks/K562_genes.fpkm_tracking example/irfinder/K562_IRFinder-IR-dir.txt outputs/reviewer_example/K562_IRs.bed outputs/reviewer_example/K562_nonIRs.bed
-python scripts/02_filter_bed_windows.py outputs/reviewer_example/K562_IRs.bed outputs/reviewer_example/K562_IRs_windows.bed
-python scripts/02_filter_bed_windows.py outputs/reviewer_example/K562_nonIRs.bed outputs/reviewer_example/K562_nonIRs_windows.bed
-python -c "from pathlib import Path; p=Path('outputs/reviewer_example'); n=[sum(1 for _ in (p/f).open()) for f in ['K562_IRs.bed','K562_nonIRs.bed']]; print('IR, nonIR:', n); assert n == [10670, 55360]"
+python -c "from pathlib import Path; Path('outputs/run_example').mkdir(parents=True, exist_ok=True)"
+python scripts/01_filter_ir_events.py example/cufflinks/K562_genes.fpkm_tracking example/irfinder/K562_IRFinder-IR-dir.txt outputs/run_example/K562_IRs.bed outputs/run_example/K562_nonIRs.bed
+python scripts/02_filter_bed_windows.py outputs/run_example/K562_IRs.bed outputs/run_example/K562_IRs_windows.bed
+python scripts/02_filter_bed_windows.py outputs/run_example/K562_nonIRs.bed outputs/run_example/K562_nonIRs_windows.bed
+python -c "from pathlib import Path; p=Path('outputs/run_example'); n=[sum(1 for _ in (p/f).open()) for f in ['K562_IRs.bed','K562_nonIRs.bed']]; print('IR, nonIR:', n); assert n == [10670, 55360]"
 ```
 
 Expected: 10,670 IR and 55,360 nonIR rows **before** length filtering. The two
@@ -209,9 +209,9 @@ for cell in K562 GM12878 IMR-90 HepG2 H1 GM23248 HeLa-S3 SK-N-SH; do
   test -s "$f" || { echo "Missing input: $f"; exit 1; }
   datasets+=("$f")
 done
-python scripts/05_train_intronsformer.py --datasets "${datasets[@]}" --output-dir outputs/reviewer_model --epochs 15 --batch-size 16 --num-workers 4 --seed 42 --k-mer 3
-ls -lh outputs/reviewer_model/best_2conv_auc.pt outputs/reviewer_model/best_2conv_loss.pt
-sha256sum outputs/reviewer_model/best_2conv_auc.pt
+python scripts/05_train_intronsformer.py --datasets "${datasets[@]}" --output-dir outputs/run_model --epochs 15 --batch-size 16 --num-workers 4 --seed 42 --k-mer 3
+ls -lh outputs/run_model/best_2conv_auc.pt outputs/run_model/best_2conv_loss.pt
+sha256sum outputs/run_model/best_2conv_auc.pt
 ```
 
 The script prints validation and final-test metrics. Record stdout, the input
@@ -225,11 +225,11 @@ Continue in the same Bash session/model environment with `datasets` from C.
 Use the checkpoint just trained, and a fresh IG output directory:
 
 ```bash
-python scripts/06_integrated_gradients.py --datasets "${datasets[@]}" --checkpoint outputs/reviewer_model/best_2conv_auc.pt --output-dir outputs/reviewer_ig --steps 50 --internal-batch-size 10 --infer-batch-size 32 --num-workers 4 --seed 42
-mkdir -p outputs/reviewer_motifs
+python scripts/06_integrated_gradients.py --datasets "${datasets[@]}" --checkpoint outputs/run_model/best_2conv_auc.pt --output-dir outputs/run_ig --steps 50 --internal-batch-size 10 --infer-batch-size 32 --num-workers 4 --seed 42
+mkdir -p outputs/run_motifs
 for sign in pos neg; do
-  python scripts/07_extract_ig_motifs.py --direction "$sign" --seq "outputs/reviewer_ig/ig_all_${sign}_sequence.csv" --score "outputs/reviewer_ig/ig_all_${sign}_score.csv" --out "outputs/reviewer_motifs/${sign}.csv" --min_len 5 --count 3
-  python scripts/08_motifs_to_meme.py --in "outputs/reviewer_motifs/${sign}.csv" --out "outputs/reviewer_motifs/${sign}.meme"
+  python scripts/07_extract_ig_motifs.py --direction "$sign" --seq "outputs/run_ig/ig_all_${sign}_sequence.csv" --score "outputs/run_ig/ig_all_${sign}_score.csv" --out "outputs/run_motifs/${sign}.csv" --min_len 5 --count 3
+  python scripts/08_motifs_to_meme.py --in "outputs/run_motifs/${sign}.csv" --out "outputs/run_motifs/${sign}.meme"
 done
 ```
 
@@ -247,12 +247,12 @@ RBP_DB="$PWD/metadata/knockdown/Homo_sapiens.meme"
 test -s "$TF_DB"
 test -s "$RBP_DB"
 sha256sum "$TF_DB" "$RBP_DB"
-mkdir -p outputs/reviewer_tomtom
+mkdir -p outputs/run_tomtom
 for sign in pos neg; do
-  tomtom -oc "outputs/reviewer_tomtom/tf_${sign}" -thresh 0.05 "outputs/reviewer_motifs/${sign}.meme" "$TF_DB"
-  python scripts/tomtom_to_tf.py --meme "$TF_DB" --tomtom "outputs/reviewer_tomtom/tf_${sign}/tomtom.tsv" --out "outputs/reviewer_tomtom/tf_${sign}/matched_factors.csv" --qthresh 0.05
-  tomtom -oc "outputs/reviewer_tomtom/rbp_${sign}" -thresh 0.05 "outputs/reviewer_motifs/${sign}.meme" "$RBP_DB"
-  python scripts/tomtom_to_tf.py --meme "$RBP_DB" --tomtom "outputs/reviewer_tomtom/rbp_${sign}/tomtom.tsv" --out "outputs/reviewer_tomtom/rbp_${sign}/matched_factors.csv" --qthresh 0.05
+  tomtom -oc "outputs/run_tomtom/tf_${sign}" -thresh 0.05 "outputs/run_motifs/${sign}.meme" "$TF_DB"
+  python scripts/tomtom_to_tf.py --meme "$TF_DB" --tomtom "outputs/run_tomtom/tf_${sign}/tomtom.tsv" --out "outputs/run_tomtom/tf_${sign}/matched_factors.csv" --qthresh 0.05
+  tomtom -oc "outputs/run_tomtom/rbp_${sign}" -thresh 0.05 "outputs/run_motifs/${sign}.meme" "$RBP_DB"
+  python scripts/tomtom_to_tf.py --meme "$RBP_DB" --tomtom "outputs/run_tomtom/rbp_${sign}/tomtom.tsv" --out "outputs/run_tomtom/rbp_${sign}/matched_factors.csv" --qthresh 0.05
 done
 ```
 
