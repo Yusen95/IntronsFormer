@@ -1,0 +1,2 @@
+sample	fpkm	irfinder	fasta	chip	dnase	cpg_plus	cpg_minus
+K562	/path/to/K562/genes.fpkm_tracking	/path/to/K562/IRFinder-IR-nondir.txt	/path/to/hg38.fa	/path/to/K562_H3K36me3.bigWig	/path/to/K562_DHS.bigWig	/path/to/K562_CpG_plus.bigWig	/path/to/K562_CpG_minus.bigWig

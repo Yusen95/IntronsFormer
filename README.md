@@ -2,7 +2,19 @@
 
 This repository contains metadata, example preprocessing outputs, processed inputs, and downstream analysis scripts for reproducing the analyses in the paper.
 
-**Start here:** [Commands for readers and reviewers](docs/REVIEWER_RUN_GUIDE.md)
+**Start here:** [One command per workflow](docs/SIMPLE_PIPELINES.md) combines
+preprocessing, training, interpretation and plotting into a single entry point:
+
+```bash
+python run_pipeline.py preprocess --example
+python run_pipeline.py plot
+# After full preprocessing has produced datasets.txt, in the model environment:
+python run_pipeline.py train --dataset-list outputs/preprocessed/datasets.txt --batch-size 2 --num-workers 0
+```
+
+See the guide for the full preprocessing manifest, CPU/GPU settings, gradient
+accumulation and IG/Tomtom options. The included BED example does not generate
+training data. [Commands for readers and reviewers](docs/REVIEWER_RUN_GUIDE.md)
 provides installation commands, an executable small example, all four plotting
 commands, expected numerical results, and the conditional raw-data-to-model
 runbook. Each route states its prerequisites and verification status.

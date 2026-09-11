@@ -13,6 +13,7 @@ from captum.attr import IntegratedGradients
 from performer_pytorch import SelfAttention
 from torch.amp import autocast
 from torch.utils.data import DataLoader, Dataset
+from runtime_options import add_runtime_arguments, positive_int, nonnegative_int, resolve_runtime
 
 
 def parse_args():
@@ -28,10 +29,11 @@ def parse_args():
     parser.add_argument("--checkpoint", required=True, help="Trained model checkpoint.")
     parser.add_argument("--output-dir", default="outputs/integrated_gradients")
     parser.add_argument("--k-mer", type=int, default=3)
-    parser.add_argument("--steps", type=int, default=50)
-    parser.add_argument("--internal-batch-size", type=int, default=10)
-    parser.add_argument("--infer-batch-size", type=int, default=32)
-    parser.add_argument("--num-workers", type=int, default=4)
+    parser.add_argument("--steps", type=positive_int, default=50)
+    parser.add_argument("--internal-batch-size", type=positive_int, default=10)
+    parser.add_argument("--infer-batch-size", type=positive_int, default=32)
+    parser.add_argument("--num-workers", type=nonnegative_int, default=4)
+    add_runtime_arguments(parser)
     parser.add_argument("--save-every", type=int, default=50)
     parser.add_argument("--seed", type=int, default=42)
     return parser.parse_args()
@@ -409,13 +411,12 @@ def process_selection(dataset, selection, tag, output_dir, model, ig, device, ar
 
 def main():
     args = parse_args()
+    device, use_amp = resolve_runtime(args)
     set_random_seed(args.seed)
 
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    use_amp = device.type == "cuda"
     print(f"Using device: {device}")
 
     all_x, labels = load_all_datasets(args.datasets)

@@ -1,5 +1,9 @@
 # Commands for readers and reviewers
 
+For fewer manual steps, use the [single-command pipelines](SIMPLE_PIPELINES.md):
+`run_pipeline.py preprocess`, `train`, `interpret` and `plot`. The detailed
+commands below remain available for examining individual stages.
+
 This guide provides executable commands, their prerequisites and expected
 outputs. Start with **A** to check the included data and re-create the plots.
 Use **B–D** for a new model run after supplying the external data and software.
@@ -102,7 +106,8 @@ Expected event-count comparison: TF candidate/control counts **5/15**, means
 means **260.0233/245.875**, p approximately **0.7494**. Occupancy comparison:
 TF counts **20/21**, p approximately **0.001106**; RBP counts **10/7**,
 p approximately **0.25350**. These tests operate on different row populations.
-The repository currently contains five unit tests; all passed during packaging.
+The original packaging check contained five unit tests; additional pipeline
+tests now also run through this command.
 
 ### A5. Optionally rebuild the tables used for plotting
 
