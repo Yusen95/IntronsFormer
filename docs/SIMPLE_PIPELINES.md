@@ -103,6 +103,8 @@ python run_pipeline.py train --dataset-list outputs/preprocessed/datasets.txt --
 | `--batch-size` | Samples per forward/backward pass; default 16 |
 | `--accumulation-steps` | Passes per optimizer update; default 4 |
 | `--epochs` | Training epochs; default 15 |
+| `--num-layers` | Encoder layers; default 6; use 8 for a new 8-layer run |
+| `--num-heads` | Attention heads per layer; default 6; use 8 for a new 8-head run |
 | `--device auto/cpu/cuda` | Auto selects CUDA when available, otherwise CPU |
 | `--precision auto/fp32/bf16` | Auto uses BF16 only on supported CUDA GPUs, otherwise FP32 |
 | `--num-workers` | DataLoader workers; driver default 0, convenient on Windows |
@@ -118,7 +120,11 @@ are based on batches. Use accumulation 1 to avoid a partial group. A run with
 fewer training batches than the accumulation setting now fails explicitly
 instead of finishing without any optimizer update.
 
-Model architecture is unchanged. Reducing batch size reduces activation memory
+The default architecture remains 6 layers and 6 heads. Set `--num-layers 8
+--num-heads 8` on both `train` and `interpret` to use the 8-layer, 8-head
+configuration, and pass the newly trained checkpoint to `interpret`. The
+released 6-layer, 6-head weights cannot be used for the 8-layer, 8-head model.
+Reducing batch size reduces activation memory
 but does not shrink the model or the in-memory dataset; CPU training can still
 be slow and require substantial RAM. A one-epoch run checks execution and is
 not a reproduction of the 15-epoch result. No automatic downsampling occurs.

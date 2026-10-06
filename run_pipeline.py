@@ -96,7 +96,7 @@ def preprocess_plan(args, out):
 
 def runtime_flags(args):
     flags = ["--device", args.device, "--precision", args.precision, "--num-workers", args.num_workers,
-             "--seed", args.seed]
+             "--seed", args.seed, "--num-layers", args.num_layers, "--num-heads", args.num_heads]
     if args.torch_threads is not None:
         flags += ["--torch-threads", args.torch_threads]
     return flags
@@ -156,6 +156,8 @@ def parse_args(argv=None):
         cmd.add_argument("--output-dir", type=Path, default=Path("outputs/pipeline_" + name))
         cmd.add_argument("--num-workers", type=nonnegative_int, default=0)
         cmd.add_argument("--seed", type=int, default=42)
+        cmd.add_argument("--num-layers", type=positive_int, default=6, help="Encoder layers; use the same value for training and interpretation.")
+        cmd.add_argument("--num-heads", type=positive_int, default=6, help="Attention heads per layer; must match the checkpoint.")
         add_runtime_arguments(cmd)
         if name == "train":
             cmd.add_argument("--batch-size", type=positive_int, default=16)

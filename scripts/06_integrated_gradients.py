@@ -29,6 +29,8 @@ def parse_args():
     parser.add_argument("--checkpoint", required=True, help="Trained model checkpoint.")
     parser.add_argument("--output-dir", default="outputs/integrated_gradients")
     parser.add_argument("--k-mer", type=int, default=3)
+    parser.add_argument("--num-layers", type=positive_int, default=6, help="Encoder layers used to train the checkpoint.")
+    parser.add_argument("--num-heads", type=positive_int, default=6, help="Attention heads per layer used to train the checkpoint.")
     parser.add_argument("--steps", type=positive_int, default=50)
     parser.add_argument("--internal-batch-size", type=positive_int, default=10)
     parser.add_argument("--infer-batch-size", type=positive_int, default=32)
@@ -234,12 +236,12 @@ def load_all_datasets(dataset_paths):
     return all_x, np.array(all_y).reshape(-1)
 
 
-def build_model(k_mer, checkpoint, device):
+def build_model(k_mer, checkpoint, device, num_layers=6, num_heads=6):
     model = GenomicsBERTModel(
         vocab_size=4 ** k_mer + 1,
         embed_dim=768,
-        num_layers=6,
-        num_heads=6,
+        num_layers=num_layers,
+        num_heads=num_heads,
         output_dim=1,
         dropout_rate=0.1,
     ).to(device)
@@ -421,7 +423,7 @@ def main():
     print(f"Samples: {len(all_x):,}  Positive: {labels.mean() * 100:.1f}%")
 
     dataset = GenomicDatasetBed(all_x, labels, k_mer=args.k_mer)
-    model = build_model(args.k_mer, args.checkpoint, device)
+    model = build_model(args.k_mer, args.checkpoint, device, args.num_layers, args.num_heads)
 
     pos_sel, neg_sel = get_or_create_selection(
         model, dataset, labels, output_dir, device, args, use_amp

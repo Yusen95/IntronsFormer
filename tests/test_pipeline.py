@@ -91,6 +91,23 @@ class PipelineTests(unittest.TestCase):
                 self.assertEqual(run.call_count, 1)
             self.assertFalse((out/'PIPELINE_COMPLETE').exists())
 
+    def test_training_and_ig_forward_matching_architecture(self):
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            for name in ('data.npz', 'model.pt'):
+                (base/name).write_text('fixture')
+            for stage in ('train', 'interpret'):
+                for size in (6, 8):
+                    with self.subTest(stage=stage, size=size):
+                        argv = [stage, '--datasets', str(base/'data.npz')]
+                        if stage == 'interpret':
+                            argv += ['--checkpoint', str(base/'model.pt')]
+                        if size == 8:
+                            argv += ['--num-layers', '8', '--num-heads', '8']
+                        commands, _, _ = pipeline.model_plan(pipeline.parse_args(argv), base/'out')
+                        for option in ('--num-layers', '--num-heads'):
+                            self.assertEqual(commands[0][commands[0].index(option)+1], str(size))
+
     def test_missing_input_and_invalid_sizes_rejected_before_launch(self):
         with tempfile.TemporaryDirectory() as directory:
             missing = Path(directory)/'absent.txt'
@@ -101,6 +118,11 @@ class PipelineTests(unittest.TestCase):
             with contextlib.redirect_stderr(io.StringIO()):
                 with self.assertRaises(SystemExit):
                     pipeline.parse_args(['train','--datasets','x.npz','--batch-size','0'])
+                for stage in ('train', 'interpret'):
+                    for option in ('--num-layers', '--num-heads'):
+                        with self.subTest(stage=stage, option=option), self.assertRaises(SystemExit):
+                            pipeline.parse_args([stage, '--datasets', 'x.npz', '--checkpoint', 'x.pt', option, '0']
+                                                if stage == 'interpret' else [stage, '--datasets', 'x.npz', option, '0'])
 
     def test_precision_fallback_and_explicit_cpu(self):
         fake = Mock()

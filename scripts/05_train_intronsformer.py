@@ -37,6 +37,8 @@ def parse_args():
     add_runtime_arguments(parser)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--k-mer", type=int, default=3)
+    parser.add_argument("--num-layers", type=positive_int, default=6, help="Encoder layers; use 8 for the 8-layer configuration.")
+    parser.add_argument("--num-heads", type=positive_int, default=6, help="Attention heads per layer; must match the IG configuration.")
     return parser.parse_args()
 
 
@@ -375,8 +377,8 @@ def main():
     model = GenomicsBERTModel(
         vocab_size,
         embed_dim=768,
-        num_layers=6,
-        num_heads=6,
+        num_layers=args.num_layers,
+        num_heads=args.num_heads,
         output_dim=1,
         dropout_rate=0.1,
     ).to(device)

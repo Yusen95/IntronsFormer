@@ -241,6 +241,22 @@ python scripts/05_train_intronsformer.py \
 
 The training script splits samples by genomic interval to avoid placing the same interval in multiple splits, trains a Performer-based sequence/signal model, and reports ROC-AUC, PR-AUC, and F1 on the held-out test split.
 
+Both training and integrated gradients accept `--num-layers` and `--num-heads`.
+The defaults remain 6 layers and 6 heads to match the released `model-v1.0.0`
+checkpoint. For a new **8-layer, 8-head** run, use:
+
+```bash
+python run_pipeline.py train --dataset-list outputs/preprocessed/datasets.txt --num-layers 8 --num-heads 8 --output-dir outputs/model_8x8
+python run_pipeline.py interpret --dataset-list outputs/preprocessed/datasets.txt --checkpoint outputs/model_8x8/best_2conv_auc.pt --num-layers 8 --num-heads 8 --output-dir outputs/interpret_8x8
+```
+
+These options also work with the standalone `05_train_intronsformer.py` and
+`06_integrated_gradients.py` scripts. IG must use the architecture and checkpoint
+from the same training run; checkpoint loading remains strict. The 8-layer,
+8-head configuration requires new training and downstream analysis and does not
+convert the released weights or reproduce the existing reported results merely
+by changing these options.
+
 After training, compute integrated-gradient scores with:
 
 ```bash
